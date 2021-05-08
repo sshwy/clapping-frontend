@@ -1,37 +1,55 @@
 <template>
-  <div v-show="sessioned" class="main-container">
-    <div class="navbar">
-      <p>
-        您以 「<span class="username">{{ username }}</span>」 的身份登录
-        <input v-on:click="onLogout" type="button" value="注销" class="btn" />
-      </p>
+  <transition name="fade">
+    <div
+      v-if="!sessioned"
+      class="full-page"
+      :style="{
+        display: 'table',
+        position: 'absolute',
+      }"
+    >
+      <div class="user-register">
+        <form onsubmit="return false">
+          <input v-model="username" type="text" placeholder="取个名字吧 ^_^" />
+          <input
+            v-on:click="onUsernameSelection"
+            class="btn username-input"
+            type="submit"
+            value="提交"
+          />
+        </form>
+      </div>
     </div>
-    <hr />
-    <Users />
-    <hr />
-    <Main />
-    <hr />
-    <Scene />
-  </div>
-  <div
-    v-if="!sessioned"
-    class="full-page"
-    :style="{
-      display: 'table',
-    }"
-  >
-    <div class="user-register">
-      <form onsubmit="return false">
-        <input v-model="username" type="text" placeholder="取个名字吧 ^_^" />
-        <input
-          v-on:click="onUsernameSelection"
-          class="btn username-input"
-          type="submit"
-          value="提交"
+  </transition>
+  <transition name="delay-fade">
+    <div v-show="sessioned" class="main-container">
+      <div class="navbar">
+        <p>
+          您以 「<span class="username">{{ username }}</span
+          >」 的身份登录
+          <input v-on:click="onLogout" type="button" value="注销" class="btn" />
+        </p>
+      </div>
+      <hr />
+      <Users />
+      <hr />
+      <Main />
+      <hr />
+      <Scene />
+    </div>
+  </transition>
+  <teleport to="#app">
+    <div id="message-container">
+      <transition-group name="message-list" tag="div">
+        <message
+          v-for="msg in messageList"
+          :key="msg.id"
+          :text="msg.text"
+          :type="msg.type"
         />
-      </form>
+      </transition-group>
     </div>
-  </div>
+  </teleport>
 </template>
 
 <script>
@@ -39,6 +57,7 @@ import socket from "./socket";
 import Users from "./components/Users.vue";
 import Main from "./components/Main.vue";
 import Scene from "./components/Scene.vue";
+import Message from "./components/Message.vue";
 
 export default {
   name: "App",
@@ -46,11 +65,13 @@ export default {
     Users,
     Main,
     Scene,
+    Message,
   },
   data() {
     return {
       username: "",
-      sessioned: false,
+      sessioned: true,
+      messageList: [],
     };
   },
   created() {
@@ -60,6 +81,8 @@ export default {
       socket.auth = { sessionID };
       console.log("reconnect");
       socket.connect();
+    } else {
+      this.sessioned = false;
     }
 
     socket.on("session", ({ sessionID, userID, username }) => {
@@ -75,14 +98,22 @@ export default {
         // clear cache and reload
         this.onClearCache();
         location.reload();
+      } else if (err.message === "xhr poll error") {
+        location.reload();
       }
     });
     socket.on("server_error", (err) => {
       console.error(`[server] ` + err.message);
     });
-    socket.on('finish logout', () => {
+    socket.on("finish logout", () => {
       this.onClearCache();
       location.reload();
+    });
+    socket.on('display message', (type, text, delay = 3000) => {
+      this.addMessage(type, text, delay);
+    });
+    socket.on("room list update", () => {
+      this.addMessage('success', '成功刷新房间列表');
     });
   },
   methods: {
@@ -95,7 +126,21 @@ export default {
       socket.connect();
     },
     onLogout() {
-      socket.emit('logout');
+      socket.emit("logout");
+    },
+    addMessage (type, text, delay = 3000) {
+      const id = new Date().getTime();
+      this.messageList.unshift({
+        id: id,
+        text: text,
+        type: type,
+        delay: delay
+      });
+      this.$nextTick(function () {
+        setTimeout(() => {
+          this.messageList = this.messageList.filter(msg => msg.id !== id);
+        }, delay);
+      });
     },
   },
 };
@@ -103,9 +148,43 @@ export default {
 
 <style>
 #app {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.delay-fade-enter-active {
+  animation: delay-fade-appear 2s;
+}
+
+@keyframes delay-fade-appear {
+  from {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: relative;
 }
 * {
   box-sizing: border-box;
@@ -137,6 +216,7 @@ body {
   border-radius: 0.3em;
   float: left;
   margin: 5px;
+  user-select: none;
 }
 
 .card.card-with-hover {
@@ -152,14 +232,6 @@ body {
 }
 .card-content {
   padding: 0 0.8em 0.8em;
-}
-
-.card::before {
-  display: block;
-  position: absolute;
-  content: "";
-  width: 100%;
-  height: 100%;
 }
 
 .main::after,
@@ -190,6 +262,7 @@ input[type="text"] {
   outline: none;
   margin: 0 3px;
   font-size: 1em;
+  padding: 0.2em 0.3em;
 }
 .full-page {
   width: 100vw;

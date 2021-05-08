@@ -51,13 +51,15 @@ export default {
       this.roomInfo = room;
       this.type = "room_info";
     });
-    socket.on("room list", (rooms) => {
-      this.roomList = rooms.map(room => ({
+    const onRoomList = (rooms) => {
+      this.roomList = rooms.map((room) => ({
         ...room,
-        vid: room.id + (new Date()).getTime(),
+        vid: room.id + new Date().getTime(),
       }));
       this.type = "room_list";
-    });
+    };
+    socket.on("room list", onRoomList);
+    socket.on("room list update", onRoomList);
   },
   methods: {
     onSelectRoom(id) {
