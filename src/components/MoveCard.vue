@@ -19,4 +19,15 @@ export default {
 </script>
 
 <style>
+.movement-card {
+  border: 1px solid black;
+  padding: 2px 5px;
+  border-radius: 3px;
+  margin: 2px;
+  float: left;
+}
+
+.movement-card:hover {
+  cursor: pointer;
+}
 </style>

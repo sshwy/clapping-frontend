@@ -1,10 +1,12 @@
 <template>
   <p v-if="hasTarget" class="movement-log">
+    <span v-if="turn">「第 {{ turn }} 回合」</span>
     <span class="from">{{ from }}</span> 对
     <span class="to">{{ to }}</span> 发动了
     <span class="move">{{ move_title }}</span>
   </p>
   <p v-else class="movement-log">
+    <span v-if="turn">「第 {{ turn }} 回合」</span>
     <span class="from">{{ from }}</span> 发动了
     <span class="move">{{ move_title }}</span>
   </p>
@@ -30,7 +32,7 @@ export default {
       move_title: MoveTitle.zh_CN[this.description.move],
       from: this.description.from,
       to: this.description.to,
-      move: this.description.move,
+      turn: this.description.turn,
     };
   },
 };

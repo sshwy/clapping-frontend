@@ -36,14 +36,16 @@ export default {
           ? arr.filter((e) => e.id === mv.target)[0].name
           : "";
         return {
-          id: e.name + mv.move.toString() + target,
+          id: e.name + mv.move.toString() + target + data.status.turn.toString(),
           from: e.name,
           move: mv.move,
           to: target,
+          turn: data.status.turn,
         };
       });
       // this.draw_sentences.push(...appendLog);
-      this.draw_sentences = appendLog;
+      const newArray = [...appendLog,  ...this.draw_sentences];
+      this.draw_sentences = newArray;
       console.log(this.draw_sentences);
 
       socket.emit("finish draw");

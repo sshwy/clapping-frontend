@@ -14,7 +14,7 @@
     </div>
     <div v-if="type === 'terminate'" v-html="message"></div>
     <div v-if="type === 'req_move' || type === 'req_target'">
-      你拥有 {{ room_status.self.movePoint }} 行动点
+      「第 {{ room_status.turn }} 回合」你拥有 {{ room_status.self.movePoint }} 行动点
     </div>
     <div v-if="type === 'req_move'">
       <move-card
@@ -25,14 +25,14 @@
       />
     </div>
     <div v-if="type === 'req_target'">
-      <span
+      <div
         v-for="u in targetList"
         class="user-select-card"
         v-bind:key="u.id"
         v-on:click="() => onSelectMovement(selected_move, u.id)"
       >
         {{ u.name }}
-      </span>
+      </div>
     </div>
     <div v-if="type === 'submitted'">
       <movement-log :description="submitted_movement" />

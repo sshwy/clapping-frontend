@@ -139,26 +139,15 @@ span.user-card {
   background: #ffc107;
 }
 
-span.movement-card {
-  border: 1px solid black;
-  padding: 2px 5px;
-  border-radius: 3px;
-  margin: 2px;
+.user-select-card {
   float: left;
-}
-
-span.movement-card:hover {
-  cursor: pointer;
-}
-
-span.user-select-card {
   border: 1px solid black;
   padding: 2px 5px;
   border-radius: 3px;
   margin: 2px;
 }
 
-span.user-select-card:hover {
+.user-select-card:hover {
   cursor: pointer;
 }
 
