@@ -97,7 +97,7 @@ function suggestMovement (move_point) {
     id: i,
     title: MoveData[i].title,
     move_points: MoveData[i].point,
-  }));
+  })).sort((a, b) => a.move_points - b.move_points);
 }
 
 function needTarget (move_id) {
