@@ -1,4 +1,4 @@
-# demo
+# Frontend of the Clapping Game
 
 ## Project setup
 ```
