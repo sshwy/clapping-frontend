@@ -14,7 +14,8 @@
     </div>
     <div v-if="type === 'terminate'" v-html="message"></div>
     <div v-if="type === 'req_move' || type === 'req_target'">
-      「第 {{ room_status.turn }} 回合」你拥有 {{ room_status.self.movePoint }} 行动点
+      「第 {{ room_status.turn }} 回合」你拥有
+      {{ room_status.self.movePoint }} 行动点
     </div>
     <div v-if="type === 'req_move'">
       <move-card
@@ -35,7 +36,10 @@
       </div>
     </div>
     <div v-if="type === 'submitted'">
-      <movement-log :description="submitted_movement" />
+      <movement-log
+        :description="submitted_movement"
+        :selfname="room_status.self.name"
+      />
     </div>
   </div>
 </template>
@@ -43,7 +47,7 @@
 <script>
 import socket from "../socket";
 import { PlayerStatus, suggestMovement, needTarget } from "../utils";
-import MoveCard from './MoveCard.vue';
+import MoveCard from "./MoveCard.vue";
 import MovementLog from "./MovementLog.vue";
 
 export default {
@@ -86,9 +90,9 @@ export default {
       this.moveList = suggestMovement(status.self.movePoint);
       this.type = "req_move";
     });
-    socket.on('submitted movement', data => {
+    socket.on("submitted movement", (data) => {
       this.submitted_movement = data;
-      this.type = 'submitted';
+      this.type = "submitted";
     });
   },
   methods: {

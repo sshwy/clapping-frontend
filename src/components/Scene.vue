@@ -5,6 +5,7 @@
         v-for="item of draw_sentences"
         :key="item.id"
         :description="item"
+        :selfname="draw_data.status.self.name"
       />
     </div>
   </div>
@@ -28,7 +29,6 @@ export default {
   },
   created() {
     socket.on("draw", (data) => {
-      this.type = "draw";
       this.draw_data = data;
       const appendLog = data.status.playerList.map((e, idx, arr) => {
         const mv = data.movement_map[e.id];
@@ -55,11 +55,15 @@ export default {
       this.draw_sentences = newArray;
       console.log(this.draw_sentences);
 
-      if (data.event_name === "watcher draw") {
-        socket.emit("watcher finish draw");
-      } else {
-        socket.emit("finish draw");
-      }
+      this.type = "draw";
+
+      this.$nextTick(function () {
+        if (data.event_name === "watcher draw") {
+          socket.emit("watcher finish draw");
+        } else {
+          socket.emit("finish draw");
+        }
+      });
     });
     socket.on("clear draw log", () => {
       this.draw_sentences = [];

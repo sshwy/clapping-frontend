@@ -23,6 +23,7 @@ export default {
   name: "MovementLog",
   props: {
     description: Object,
+    selfname: String,
   },
   created() {
     console.log("created", this.description);
@@ -31,13 +32,14 @@ export default {
     console.log("updated", this.description);
   },
   data() {
+    const checkSelf = (origin, self) => origin === self ? '你' : origin;
     return {
       hasTarget: Boolean(this.description.to),
       move_title: MoveData[this.description.move]?.title,
-      from: this.description.from,
+      from: checkSelf(this.description.from, this.selfname),
       to: this.description.to,
       turn: this.description.turn,
-      die: this.description.die,
+      die: checkSelf(this.description.die, this.selfname),
     };
   },
 };
