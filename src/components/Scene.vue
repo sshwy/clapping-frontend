@@ -32,27 +32,38 @@ export default {
       this.draw_data = data;
       const appendLog = data.status.playerList.map((e, idx, arr) => {
         const mv = data.movement_map[e.id];
-        const target = mv.target
+        const tar = mv.target
           ? arr.filter((e) => e.id === mv.target)[0].name
           : "";
         return {
-          id: e.name + mv.move.toString() + target + data.status.turn.toString(),
+          id: e.name + mv.move.toString() + tar + data.status.turn.toString(),
           from: e.name,
           move: mv.move,
-          to: target,
+          to: tar,
+          turn: data.status.turn,
+        };
+      });
+      const deads = data.deads.map((e) => {
+        return {
+          id: e.self.id + data.status.turn.toString(),
+          die: e.self.name,
           turn: data.status.turn,
         };
       });
       // this.draw_sentences.push(...appendLog);
-      const newArray = [...appendLog,  ...this.draw_sentences];
+      const newArray = [...deads, ...appendLog, ...this.draw_sentences];
       this.draw_sentences = newArray;
       console.log(this.draw_sentences);
 
-      socket.emit("finish draw");
+      if (data.event_name === "watcher draw") {
+        socket.emit("watcher finish draw");
+      } else {
+        socket.emit("finish draw");
+      }
     });
     socket.on("clear draw log", () => {
       this.draw_sentences = [];
-      this.type = 'empty';
+      this.type = "empty";
     });
   },
 };

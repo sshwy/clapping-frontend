@@ -1,12 +1,16 @@
 <template>
-  <p v-if="hasTarget" class="movement-log">
-    <span v-if="turn">「第 {{ turn }} 回合」</span>
+  <p v-if="hasTarget" class="movement-log move-log">
+    <span v-if="turn" class="turn">「第 {{ turn }} 回合」</span>
     <span class="from">{{ from }}</span> 对
     <span class="to">{{ to }}</span> 发动了
     <span class="move">{{ move_title }}</span>
   </p>
+  <p v-else-if="die" class="movement-log die-log">
+    <span v-if="turn" class="turn">「第 {{ turn }} 回合」</span>
+    <span class="die">{{ die }}</span> 没了（大悲）
+  </p>
   <p v-else class="movement-log">
-    <span v-if="turn">「第 {{ turn }} 回合」</span>
+    <span v-if="turn" class="turn">「第 {{ turn }} 回合」</span>
     <span class="from">{{ from }}</span> 发动了
     <span class="move">{{ move_title }}</span>
   </p>
@@ -20,11 +24,11 @@ export default {
   props: {
     description: Object,
   },
-  created () {
-    console.log('created', this.description);
+  created() {
+    console.log("created", this.description);
   },
-  updated () {
-    console.log('updated', this.description);
+  updated() {
+    console.log("updated", this.description);
   },
   data() {
     return {
@@ -33,6 +37,7 @@ export default {
       from: this.description.from,
       to: this.description.to,
       turn: this.description.turn,
+      die: this.description.die,
     };
   },
 };
@@ -46,6 +51,13 @@ export default {
   font-weight: bold;
 }
 .movement-log .move {
+  font-weight: bold;
+}
+.movement-log .die {
+  font-weight: bold;
+}
+.movement-log.die-log .turn {
+  color: red;
   font-weight: bold;
 }
 </style>
