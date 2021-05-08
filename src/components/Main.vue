@@ -19,9 +19,9 @@
     <div v-if="type === 'req_move'">
       <move-card
         v-for="move in moveList"
-        v-bind:key="move.id"
-        v-on:click="() => onSelectMove(move.id)"
+        :key="move.id"
         :move="move"
+        v-on:click="() => onSelectMove(move.id)"
       />
     </div>
     <div v-if="type === 'req_target'">

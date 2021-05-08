@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { MoveTitle } from "../utils";
+import { MoveData } from "../utils";
 
 export default {
   name: "MovementLog",
@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       hasTarget: Boolean(this.description.to),
-      move_title: MoveTitle.zh_CN[this.description.move],
+      move_title: MoveData[this.description.move]?.title,
       from: this.description.from,
       to: this.description.to,
       turn: this.description.turn,

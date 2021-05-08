@@ -1,8 +1,8 @@
 <template>
   <div v-show="sessioned" class="main-container">
-    <div class="havbar">
+    <div class="navbar">
       <p>
-        您以 <span>{{ username }}</span> 的身份登录
+        您以 「<span class="username">{{ username }}</span>」 的身份登录
         <input v-on:click="onLogout" type="button" value="注销" class="btn" />
       </p>
     </div>
@@ -115,6 +115,10 @@ body {
   margin: 0;
 }
 
+.navbar .username {
+  font-weight: bold;
+}
+
 .user-select-card {
   float: left;
   border: 1px solid black;
@@ -142,9 +146,9 @@ body {
   cursor: pointer;
   background-color: #cfcfcf;
 }
-
 .card-title {
   padding: 0.8em;
+  font-weight: bold;
 }
 .card-content {
   padding: 0 0.8em 0.8em;

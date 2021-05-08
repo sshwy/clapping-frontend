@@ -17,6 +17,24 @@ const Move = {
   LIGHTNING_ARRESTER: 14
 };
 
+const MoveData = {
+  [Move.CLAP]: { title: '拍手', point: 0, attack: 0, defend: 0, description: '' },
+  [Move.DEFEND]: { title: '格挡', point: 0, attack: 0, defend: '*2', description: '' },
+  [Move.STRONG_DEFEND]: { title: '双重格挡', point: 1, attack: 0, defend: 4, description: '' },
+  [Move.SHOOT]: { title: '射击', point: 1, attack: 1, defend: 0, description: '' },
+  [Move.SLASH]: { title: '击剑', point: 2, attack: 2, defend: 0, description: '' },
+  [Move.LIGHTNING_STRIKE]: { title: '雷罚', point: 3, attack: 3, defend: 0, description: '' },
+  [Move.EARTHQUAKE]: { title: '地裂', point: 4, attack: 4, defend: 0, description: '' },
+  [Move.SWEEP_I]: { title: '刃波 I', point: 1, attack: '*1', defend: 0, description: '' },
+  [Move.SWEEP_II]: { title: '刃波 II', point: 2, attack: '*2', defend: 0, description: '' },
+  [Move.SWEEP_III]: { title: '刃波 III', point: 3, attack: '*3', defend: 0, description: '' },
+  [Move.LIGHTNING_STORM]: { title: '雷狱', point: 4, attack: '*4', defend: 0, description: '' },
+  [Move.THORNS_I]: { title: '荆棘 I', point: 1, attack: '0-1', defend: '*2', description: '' },
+  [Move.THORNS_II]: { title: '荆棘 II', point: 2, attack: '0-2', defend: '*3', description: '' },
+  [Move.THORNS_III]: { title: '荆棘 III', point: 3, attack: '0-3', defend: '4', description: '' },
+  [Move.LIGHTNING_ARRESTER]: { title: '避雷', point: 1, attack: 0, defend: 0, description: '' },
+};
+
 const PlayerStatus = {
   INITIALIZED: 0,
   ROOMED: 1,
@@ -27,49 +45,6 @@ const PlayerStatus = {
   DRAWING: 6,
   WATCHING: 7,
 }
-
-const MoveName = {};
-for (const key in Move) {
-  MoveName[Move[key]] = key;
-}
-
-const MoveTitle = {
-  zh_CN: {
-    [Move.CLAP]: '拍手',
-    [Move.DEFEND]: '格挡',
-    [Move.STRONG_DEFEND]: '双重格挡',
-    [Move.SHOOT]: '射击',
-    [Move.SLASH]: '击剑',
-    [Move.LIGHTNING_STRIKE]: '雷罚',
-    [Move.EARTHQUAKE]: '地裂',
-    [Move.SWEEP_I]: '刃波 I',
-    [Move.SWEEP_II]: '刃波 II',
-    [Move.SWEEP_III]: '刃波 III',
-    [Move.LIGHTNING_STORM]: '雷狱',
-    [Move.THORNS_I]: '荆棘 I',
-    [Move.THORNS_II]: '荆棘 II',
-    [Move.THORNS_III]: '荆棘 III',
-    [Move.LIGHTNING_ARRESTER]: '避雷'
-  }
-}
-
-const MovePoints = {
-  [Move.CLAP]: 0,
-  [Move.DEFEND]: 0,
-  [Move.STRONG_DEFEND]: 1,
-  [Move.SHOOT]: 1,
-  [Move.SLASH]: 2,
-  [Move.LIGHTNING_STRIKE]: 3,
-  [Move.EARTHQUAKE]: 4,
-  [Move.SWEEP_I]: 1,
-  [Move.SWEEP_II]: 2,
-  [Move.SWEEP_III]: 3,
-  [Move.LIGHTNING_STORM]: 4,
-  [Move.THORNS_I]: 1,
-  [Move.THORNS_II]: 2,
-  [Move.THORNS_III]: 3,
-  [Move.LIGHTNING_ARRESTER]: 1
-};
 
 const player_stat_info = {
   [PlayerStatus.READY]: {
@@ -120,9 +95,8 @@ function suggestMovement (move_point) {
   }
   return list.map(i => ({
     id: i,
-    name: MoveName[i],
-    title: MoveTitle.zh_CN[i],
-    move_points: MovePoints[i],
+    title: MoveData[i].title,
+    move_points: MoveData[i].point,
   }));
 }
 
@@ -141,8 +115,7 @@ export {
   player_stat_info,
   PlayerStatus,
   Move,
-  MoveName,
-  MoveTitle,
+  MoveData,
   suggestMovement,
   needTarget,
 }
