@@ -71,11 +71,27 @@ const MovePoints = {
   [Move.LIGHTNING_ARRESTER]: 1
 };
 
-const player_stat_class = {
-  [PlayerStatus.READY]: 'player-ready',
-  [PlayerStatus.LISTENING]: 'player-listening',
-  [PlayerStatus.ACTING]: 'player-acting',
-  [PlayerStatus.SUBMITED]: 'player-submited'
+const player_stat_info = {
+  [PlayerStatus.READY]: {
+    class: 'player-ready',
+    title: '已准备',
+  },
+  [PlayerStatus.LISTENING]: {
+    class: 'player-listening',
+    title: '',
+  },
+  [PlayerStatus.ACTING]: {
+    class: 'player-acting',
+    title: '执行中',
+  },
+  [PlayerStatus.SUBMITED]: {
+    class: 'player-submited',
+    title: '已执行操作',
+  },
+  [PlayerStatus.ROOMED]: {
+    class: 'player-roomed',
+    title: '未准备',
+  },
 };
 
 function suggestMovement (move_point) {
@@ -122,7 +138,7 @@ function needTarget (move_id) {
 }
 
 export {
-  player_stat_class,
+  player_stat_info,
   PlayerStatus,
   Move,
   MoveName,

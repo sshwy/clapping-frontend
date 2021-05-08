@@ -75,11 +75,11 @@ export default {
     });
     socket.on("died", () => {
       this.type = "terminate";
-      this.message = "You Died.";
+      this.message = "你咋这么菜啊～";
     });
     socket.on("win", () => {
       this.type = "terminate";
-      this.message = "You Win.";
+      this.message = "牛逼！";
     });
     socket.on("request movement", (status) => {
       this.room_status = status;

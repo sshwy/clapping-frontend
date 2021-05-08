@@ -1,10 +1,18 @@
 <template>
   <div class="users">
     <div v-if="type === 'room_list'">
-      <h3>房间列表</h3>
+      <h3>
+        房间列表
+        <input
+          type="button"
+          class="btn"
+          value="刷新状态"
+          v-on:click="onUpdateRoomList"
+        />
+      </h3>
       <room-card
         v-for="room in roomList"
-        :key="room.id"
+        :key="room.vid"
         :room="room"
         :onClick="() => onSelectRoom(room.id)"
       />
@@ -44,7 +52,10 @@ export default {
       this.type = "room_info";
     });
     socket.on("room list", (rooms) => {
-      this.roomList = rooms;
+      this.roomList = rooms.map(room => ({
+        ...room,
+        vid: room.id + (new Date()).getTime(),
+      }));
       this.type = "room_list";
     });
   },
@@ -52,6 +63,9 @@ export default {
     onSelectRoom(id) {
       console.log("on select room", id);
       socket.emit("select room", id);
+    },
+    onUpdateRoomList() {
+      socket.emit("room list update");
     },
   },
 };

@@ -115,30 +115,6 @@ body {
   margin: 0;
 }
 
-span.user-card {
-  margin: 5px;
-  font-weight: bold;
-  font-family: system-ui;
-  padding: 3px;
-  border-radius: 3px;
-}
-
-.player-ready {
-  background: #8bc34a;
-}
-
-.player-listening {
-  background: #03a9f4;
-}
-
-.player-acting {
-  background: #03a9f4;
-}
-
-.player-submited {
-  background: #ffc107;
-}
-
 .user-select-card {
   float: left;
   border: 1px solid black;

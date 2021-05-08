@@ -50,6 +50,10 @@ export default {
 
       socket.emit("finish draw");
     });
+    socket.on("clear draw log", () => {
+      this.draw_sentences = [];
+      this.type = 'empty';
+    });
   },
 };
 </script>
