@@ -55,22 +55,20 @@ export default {
 
 .user-list-item .username {
   font-weight: bold;
+  margin-right: 5px;
 }
 
 .user-list-item .remove-btn {
   display: inline;
   border: none;
-  padding: 2px 5px;
-  margin: 0 5px;
-  font-size: 90%;
   background-color: #f44336;
   color: white;
 }
 
-.tag {
+.tag, .tag.btn {
   padding: 2px 5px;
   border-radius: 3px;
-  margin: 5px 0 5px 5px;
+  margin: 5px 5px 5px 0;
   font-size: 90%;
 }
 
@@ -83,15 +81,4 @@ export default {
   color: white;
 }
 
-.player-listening {
-  background: #03a9f4;
-}
-
-.player-acting {
-  background: #03a9f4;
-}
-
-.player-submited {
-  background: #ffc107;
-}
 </style>

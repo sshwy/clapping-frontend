@@ -12,11 +12,21 @@
         v-on:click="onCancelReady"
       />
     </div>
-    <div v-if="type === 'terminate'" v-html="message"></div>
-    <div v-if="type === 'req_move' || type === 'req_target'">
-      「第 {{ room_status.turn }} 回合」你拥有
-      {{ room_status.self.movePoint }} 行动点
+
+    <div v-if="type !== 'empty' && type !== 'room_info'">
+      「第 {{ turn }} 回合」你拥有 {{ point }} 行动点
     </div>
+    <div v-if="ingame">
+      <user-card-in-game
+        v-for="u in room_info_ingame.players"
+        :key="u.id"
+        :user="u"
+        :selectable="on_select_target && u.id !== room_status?.self?.id"
+        :onClick="() => onSelectMovement(selected_move, u.id)"
+      />
+    </div>
+
+    <div v-if="type === 'terminate'" v-html="message"></div>
     <div v-if="type === 'req_move'">
       <move-card
         v-for="move in moveList"
@@ -25,17 +35,7 @@
         v-on:click="() => onSelectMove(move.id)"
       />
     </div>
-    <div v-if="type === 'req_target'">
-      <div
-        v-for="u in targetList"
-        class="user-select-card"
-        v-bind:key="u.id"
-        v-on:click="() => onSelectMovement(selected_move, u.id)"
-      >
-        {{ u.name }}
-      </div>
-    </div>
-    <div v-if="type === 'submitted' && room_status?.self?.name && submitted_movement">
+    <div v-if="type === 'submitted' && room_status?.self?.name">
       <movement-log
         :description="submitted_movement"
         :selfname="room_status.self.name"
@@ -49,12 +49,14 @@ import socket from "../socket";
 import { PlayerStatus, suggestMovement, needTarget } from "../utils";
 import MoveCard from "./MoveCard.vue";
 import MovementLog from "./MovementLog.vue";
+import UserCardInGame from "./UserCardInGame.vue";
 
 export default {
   name: "Main",
   components: {
     MoveCard,
     MovementLog,
+    UserCardInGame,
   },
   data() {
     return {
@@ -67,6 +69,10 @@ export default {
       targetList: [],
       submitted_movement: {},
       room_info_ingame: {},
+      ingame: false,
+      on_select_target: false,
+      turn: 0,
+      point: 0,
     };
   },
   created() {
@@ -74,12 +80,17 @@ export default {
       const stat = room.players.find((e) => e.id == socket.userID).stat;
       this.type = "room_info";
       this.self_stat = stat === PlayerStatus.ROOMED ? "roomed" : "ready";
+      this.ingame = false;
     });
     socket.on("room info ingame", (room) => {
       this.room_info_ingame = room;
+      this.turn = room.turn;
+      this.point = room.players.find(e => e.id === socket.userID)?.point;
+      this.ingame = true;
     });
     socket.on("room list", () => {
       this.type = "empty";
+      this.ingame = false;
     });
     socket.on("died", () => {
       this.type = "terminate";
@@ -91,6 +102,8 @@ export default {
     });
     socket.on("request movement", (status) => {
       this.room_status = status;
+      this.turn = status.turn;
+      this.point = status.self.movePoint;
       this.moveList = suggestMovement(status.self.movePoint);
       this.type = "req_move";
     });
@@ -113,16 +126,15 @@ export default {
       if (needTarget(move)) {
         console.log("selectTarget");
         this.selected_move = move;
-        this.targetList = this.room_status.playerList.filter(
-          (u) => u.id !== this.room_status.self.id
-        );
+        this.on_select_target = true;
         this.type = "req_target";
       } else {
         this.onSelectMovement(move, "");
       }
     },
     onSelectMovement(move, target) {
-      this.type = "empty";
+      this.type = "finished";
+      this.on_select_target = false;
       socket.emit("movement", { move, target });
     },
   },

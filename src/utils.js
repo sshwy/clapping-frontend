@@ -106,7 +106,7 @@ const player_stat_info = {
   },
   [PlayerStatus.SUBMITED]: {
     class: 'player-submited',
-    title: '已执行操作',
+    title: '已执行',
   },
   [PlayerStatus.ROOMED]: {
     class: 'player-roomed',
