@@ -2,7 +2,15 @@
   <div v-if="type !== 'empty'" class="talk">
     <form onsubmit="return false">
       <span class="iconfont icon-comment talk-label"></span>
-      <input type="text" v-model="text" placeholder="来 bb 几句？" style="line-height: 1.5em" />
+      <input
+        type="text"
+        v-model="text"
+        placeholder="来 bb 几句？"
+        :style="{
+          lineHeight: '1.5em',
+          width: inputWidth
+        }"
+      />
       <input type="submit" value="" style="display: none" v-on:click="onTalk" />
     </form>
   </div>
@@ -41,6 +49,11 @@ export default {
         socket.emit("talk", this.text);
         this.text = "";
       }
+    },
+  },
+  computed: {
+    inputWidth() {
+      return `${Math.max(this.text.length * 1.02 + 0.5, 20)}em`;
     },
   },
 };
