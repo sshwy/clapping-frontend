@@ -1,6 +1,8 @@
 <template>
-  <div v-if="displayHelp" class="clear-sep"></div>
-  <div :class="['card movement-card card-with-hover', 'movement-' + move.id]">
+  <div
+    :class="['card movement-card card-with-hover', 'movement-' + move.id]"
+    v-on:click="onClick"
+  >
     <div class="room-card-title card-title">
       {{ move.title }}
     </div>
@@ -15,6 +17,7 @@
       v-on:click.stop="() => onHelp(move.id)"
     ></span>
   </div>
+  <div v-if="displayHelp" class="clear-sep"></div>
   <div v-if="displayHelp" class="help-container card">
     <div class="card-content">
       <p>
@@ -42,6 +45,7 @@ export default {
     move: Object,
     helpkey: String,
     onHelp: Function,
+    onClick: Function,
   },
   data() {
     return {

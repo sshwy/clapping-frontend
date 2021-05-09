@@ -52,6 +52,7 @@ export default {
       this.type = "empty";
     });
     socket.on("room info ingame", (room) => {
+      this.selfname = socket.username;
       this.draw_sentences = room.battle_log;
       this.type = "draw";
     });

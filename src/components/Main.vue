@@ -41,7 +41,7 @@
           v-for="move in moveList"
           :key="move.id"
           :move="move"
-          v-on:click="() => onSelectMove(move.id)"
+          :onClick="() => onSelectMove(move.id)"
           :helpkey="movement_help_key"
           :onHelp="onMovementHelp"
         />
