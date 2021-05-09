@@ -112,6 +112,10 @@ const player_stat_info = {
     class: 'player-roomed',
     title: '未准备',
   },
+  [PlayerStatus.WATCHING]: {
+    class: 'player-watching',
+    title: '大悲',
+  },
 };
 
 function suggestMovement (move_point) {

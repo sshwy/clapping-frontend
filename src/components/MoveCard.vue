@@ -20,9 +20,6 @@ export default {
   props: {
     move: Object,
   },
-  created () {
-    console.log(this.move);
-  }
 };
 </script>
 

@@ -41,6 +41,9 @@ export default {
   user-select: none;
 }
 
+.userstat.tag {
+  user-select: none;
+}
 .userstat.player-acting {
   background-color: #03a9f4;
   color: white;
@@ -55,6 +58,12 @@ export default {
   background-color: #8bc34a;
   color: white;
 }
+
+.userstat.player-watching {
+  background-color: #f44336;
+  color: white;
+}
+
 .userstat.selectable:hover {
   cursor: pointer;
 }

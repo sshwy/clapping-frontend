@@ -21,7 +21,7 @@
         v-for="u in room_info_ingame.players"
         :key="u.id"
         :user="u"
-        :selectable="on_select_target && u.id !== room_status?.self?.id"
+        :selectable="on_select_target && u.id !== room_status?.self?.id && u.stat !== dead"
         :onClick="() => onSelectMovement(selected_move, u.id)"
       />
     </div>
@@ -73,6 +73,7 @@ export default {
       on_select_target: false,
       turn: 0,
       point: 0,
+      dead: PlayerStatus.WATCHING,
     };
   },
   created() {

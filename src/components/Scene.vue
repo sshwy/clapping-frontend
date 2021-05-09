@@ -5,7 +5,7 @@
         v-for="item of draw_sentences"
         :key="item.id"
         :description="item"
-        :selfname="draw_data.status.self.name"
+        :selfname="selfname"
       />
     </div>
   </div>
@@ -25,35 +25,15 @@ export default {
       type: "empty",
       draw_data: null,
       draw_sentences: [],
+      selfname: "",
     };
   },
   created() {
     socket.on("draw", (data) => {
       this.draw_data = data;
-      const appendLog = data.status.playerList.map((e, idx, arr) => {
-        const mv = data.movement_map[e.id];
-        const tar = mv.target
-          ? arr.filter((e) => e.id === mv.target)[0].name
-          : "";
-        return {
-          id: e.name + mv.move.toString() + tar + data.status.turn.toString(),
-          from: e.name,
-          move: mv.move,
-          to: tar,
-          turn: data.status.turn,
-        };
-      });
-      const deads = data.deads.map((e) => {
-        return {
-          id: e.self.id + data.status.turn.toString(),
-          die: e.self.name,
-          turn: data.status.turn,
-        };
-      });
-      // this.draw_sentences.push(...appendLog);
-      const newArray = [...deads, ...appendLog, ...this.draw_sentences];
-      this.draw_sentences = newArray;
-      console.log(this.draw_sentences);
+      this.draw_sentences.unshift(...data.logs);
+      this.selfname = socket.username;
+      // console.log(this.draw_sentences);
 
       this.type = "draw";
 
@@ -68,6 +48,10 @@ export default {
     socket.on("game prepare", () => {
       this.draw_sentences = [];
       this.type = "empty";
+    });
+    socket.on("room info ingame", (room) => {
+      this.draw_sentences = room.battle_log;
+      this.type = "draw";
     });
   },
 };

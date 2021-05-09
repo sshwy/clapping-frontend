@@ -31,7 +31,7 @@
       <Scene />
     </div>
   </transition>
-  <teleport to="#app">
+  <teleport to="body">
     <div id="message-container">
       <transition-group name="message-list" tag="div">
         <message
@@ -86,6 +86,8 @@ export default {
       socket.userID = userID; // save the ID of the user
       this.sessioned = true;
       this.username = username;
+      socket.username = username;
+      this.addMessage('success', '登录成功');
     });
     socket.on("connect_error", (err) => {
       console.error(`[connect] ` + err.message);
@@ -94,6 +96,7 @@ export default {
         this.onClearCache();
         location.reload();
       } else if (err.message === "xhr poll error") {
+        this.onClearCache();
         location.reload();
       }
     });
@@ -136,10 +139,13 @@ export default {
 </script>
 
 <style>
+body {
+  overflow-y: hidden;
+}
 #app {
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .fade-enter-active,
