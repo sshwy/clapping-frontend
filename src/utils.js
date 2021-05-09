@@ -120,6 +120,11 @@ const player_stat_info = {
 
 function suggestMovement (move_point) {
   var list = [];
+  if(move_point > 4) {
+    for(const key in Move) {
+      list.push(Move[key]);
+    }
+  }
   switch (move_point) {
     case 4:
       list.push(Move.EARTHQUAKE);
