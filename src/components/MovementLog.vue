@@ -34,7 +34,7 @@ export default {
     selfname: String,
   },
   data() {
-    const checkSelf = (origin, self) => origin === self ? '你' : origin;
+    const checkSelf = (origin, self) => (origin === self ? "你" : origin);
     return {
       hasTarget: Boolean(this.description.to),
       move_title: MoveData[this.description.move]?.title,
