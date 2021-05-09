@@ -65,7 +65,7 @@ export default {
         }
       });
     });
-    socket.on("clear draw log", () => {
+    socket.on("game prepare", () => {
       this.draw_sentences = [];
       this.type = "empty";
     });

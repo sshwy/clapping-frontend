@@ -26,7 +26,6 @@
       <navbar :username="username" />
       <hr />
       <room-list />
-      <hr />
       <Main />
       <hr />
       <Scene />
@@ -85,7 +84,6 @@ export default {
       socket.auth = { sessionID }; // attach the session ID to the next reconnection attempts
       localStorage.setItem("sessionID", sessionID); // store it in the localStorage
       socket.userID = userID; // save the ID of the user
-      console.log(socket.userID);
       this.sessioned = true;
       this.username = username;
     });
@@ -236,6 +234,7 @@ body {
   padding: 4px 6px 2px;
   font-size: 1em;
   transition: all 0.3s ease;
+  user-select: none;
 }
 
 .btn:hover {

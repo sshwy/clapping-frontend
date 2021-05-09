@@ -42,18 +42,17 @@ export default {
     };
   },
   created() {
-    socket.on("session", ({ userID, }) => {
+    socket.on("session", ({ userID }) => {
       this.selfid = userID; // save the ID of the user
-      console.log(userID);
     });
     socket.on("room info", (room) => {
       this.roomInfo = room;
       this.type = "room_info";
     });
-    socket.on("room info ingame", (room) => {
-      this.roomInfo = room;
-      this.type = "room_info";
-    });
+    // socket.on("room info ingame", (room) => {
+    //   this.roomInfo = room;
+    //   this.type = "room_info";
+    // });
     const onRoomList = (rooms) => {
       this.roomList = rooms.map((room) => ({
         ...room,
@@ -63,6 +62,10 @@ export default {
     };
     socket.on("room list", onRoomList);
     socket.on("room list update", onRoomList);
+    socket.on("game prepare", () => {
+      console.log('clear room list');
+      this.type = "empty";
+    });
   },
   methods: {
     onSelectRoom(id) {

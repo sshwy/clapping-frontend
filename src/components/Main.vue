@@ -35,7 +35,7 @@
         {{ u.name }}
       </div>
     </div>
-    <div v-if="type === 'submitted'">
+    <div v-if="type === 'submitted' && room_status?.self?.name && submitted_movement">
       <movement-log
         :description="submitted_movement"
         :selfname="room_status.self.name"
@@ -66,6 +66,7 @@ export default {
       selected_move: "",
       targetList: [],
       submitted_movement: {},
+      room_info_ingame: {},
     };
   },
   created() {
@@ -73,6 +74,9 @@ export default {
       const stat = room.players.find((e) => e.id == socket.userID).stat;
       this.type = "room_info";
       this.self_stat = stat === PlayerStatus.ROOMED ? "roomed" : "ready";
+    });
+    socket.on("room info ingame", (room) => {
+      this.room_info_ingame = room;
     });
     socket.on("room list", () => {
       this.type = "empty";

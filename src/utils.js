@@ -18,21 +18,66 @@ const Move = {
 };
 
 const MoveData = {
-  [Move.CLAP]: { title: '拍手', point: 0, attack: 0, defend: 0, description: '' },
-  [Move.DEFEND]: { title: '格挡', point: 0, attack: 0, defend: '*2', description: '' },
-  [Move.STRONG_DEFEND]: { title: '双重格挡', point: 1, attack: 0, defend: 4, description: '' },
-  [Move.SHOOT]: { title: '射击', point: 1, attack: 1, defend: 0, description: '' },
-  [Move.SLASH]: { title: '击剑', point: 2, attack: 2, defend: 0, description: '' },
-  [Move.LIGHTNING_STRIKE]: { title: '雷罚', point: 3, attack: 3, defend: 0, description: '' },
-  [Move.EARTHQUAKE]: { title: '地裂', point: 4, attack: 4, defend: 0, description: '' },
-  [Move.SWEEP_I]: { title: '刃波 I', point: 1, attack: '*1', defend: 0, description: '' },
-  [Move.SWEEP_II]: { title: '刃波 II', point: 2, attack: '*2', defend: 0, description: '' },
-  [Move.SWEEP_III]: { title: '刃波 III', point: 3, attack: '*3', defend: 0, description: '' },
-  [Move.LIGHTNING_STORM]: { title: '雷狱', point: 4, attack: '*4', defend: 0, description: '' },
-  [Move.THORNS_I]: { title: '荆棘 I', point: 1, attack: '0-1', defend: '*2', description: '' },
-  [Move.THORNS_II]: { title: '荆棘 II', point: 2, attack: '0-2', defend: '*3', description: '' },
-  [Move.THORNS_III]: { title: '荆棘 III', point: 3, attack: '0-3', defend: '4', description: '' },
-  [Move.LIGHTNING_ARRESTER]: { title: '避雷', point: 1, attack: 0, defend: 0, description: '' },
+  [Move.CLAP]: {
+    id: 0,
+    title: '拍手', point: 0, attack: 0, defend: 0, description: '', background_color: '#8bc34a'
+  },
+  [Move.DEFEND]: {
+    id: 1,
+    title: '格挡', point: 0, attack: 0, defend: '*2', description: '', background_color: '#8bc34a'
+  },
+  [Move.STRONG_DEFEND]: {
+    id: 2,
+    title: '双重格挡', point: 1, attack: 0, defend: 4, description: '', background_color: '#00bcd4'
+  },
+  [Move.SHOOT]: {
+    id: 3,
+    title: '射击', point: 1, attack: 1, defend: 0, description: '', background_color: '#00bcd4'
+  },
+  [Move.SLASH]: {
+    id: 4,
+    title: '击剑', point: 2, attack: 2, defend: 0, description: '', background_color: '#ffc107'
+  },
+  [Move.LIGHTNING_STRIKE]: {
+    id: 5,
+    title: '雷罚', point: 3, attack: 3, defend: 0, description: '', background_color: '#ff5722'
+  },
+  [Move.EARTHQUAKE]: {
+    id: 6,
+    title: '地裂', point: 4, attack: 4, defend: 0, description: '', background_color: '#ab47bc'
+  },
+  [Move.SWEEP_I]: {
+    id: 7,
+    title: '刃波 I', point: 1, attack: '*1', defend: 0, description: '', background_color: '#00bcd4'
+  },
+  [Move.SWEEP_II]: {
+    id: 8,
+    title: '刃波 II', point: 2, attack: '*2', defend: 0, description: '', background_color: '#ffc107'
+  },
+  [Move.SWEEP_III]: {
+    id: 9,
+    title: '刃波 III', point: 3, attack: '*3', defend: 0, description: '', background_color: '#ff5722'
+  },
+  [Move.LIGHTNING_STORM]: {
+    id: 10,
+    title: '雷狱', point: 4, attack: '*4', defend: 0, description: '', background_color: '#ab47bc'
+  },
+  [Move.THORNS_I]: {
+    id: 11,
+    title: '荆棘 I', point: 1, attack: '0-1', defend: '*2', description: '', background_color: '#00bcd4'
+  },
+  [Move.THORNS_II]: {
+    id: 12,
+    title: '荆棘 II', point: 2, attack: '0-2', defend: '*3', description: '', background_color: '#ffc107'
+  },
+  [Move.THORNS_III]: {
+    id: 13,
+    title: '荆棘 III', point: 3, attack: '0-3', defend: '4', description: '', background_color: '#ff5722'
+  },
+  [Move.LIGHTNING_ARRESTER]: {
+    id: 14,
+    title: '避雷', point: 1, attack: 0, defend: 0, description: '', background_color: '#00bcd4'
+  },
 };
 
 const PlayerStatus = {
@@ -93,11 +138,7 @@ function suggestMovement (move_point) {
       list.push(Move.CLAP);
       list.push(Move.DEFEND);
   }
-  return list.map(i => ({
-    id: i,
-    title: MoveData[i].title,
-    move_points: MoveData[i].point,
-  })).sort((a, b) => a.move_points - b.move_points);
+  return list.map(i => MoveData[i]).sort((a, b) => a.point - b.point);
 }
 
 function needTarget (move_id) {

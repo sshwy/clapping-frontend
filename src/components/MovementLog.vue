@@ -25,12 +25,6 @@ export default {
     description: Object,
     selfname: String,
   },
-  created() {
-    console.log("created", this.description);
-  },
-  updated() {
-    console.log("updated", this.description);
-  },
   data() {
     const checkSelf = (origin, self) => origin === self ? '你' : origin;
     return {
