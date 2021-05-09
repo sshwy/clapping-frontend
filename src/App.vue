@@ -12,11 +12,19 @@
         <form onsubmit="return false">
           <input v-model="username" type="text" placeholder="取个名字吧 ^_^" />
           <input
-            v-on:click="onUsernameSelection"
-            class="btn username-input"
             type="submit"
-            value="提交"
+            value=""
+            :style="{ display: 'none' }"
+            v-on:click="onUsernameSelection"
           />
+          <span
+            class="iconfont icon-arrow-right-circle username-submit-btn"
+            :style="{
+              fontSize: '1.8em',
+              verticalAlign: '-0.2em',
+            }"
+            v-on:click="onUsernameSelection"
+          ></span>
         </form>
       </div>
     </div>
@@ -87,7 +95,7 @@ export default {
       this.sessioned = true;
       this.username = username;
       socket.username = username;
-      this.addMessage('success', '登录成功');
+      this.addMessage("success", "登录成功");
     });
     socket.on("connect_error", (err) => {
       console.error(`[connect] ` + err.message);
@@ -188,6 +196,10 @@ body {
 
 body {
   margin: 0;
+}
+
+.username-submit-btn:hover {
+  cursor: pointer;
 }
 
 .user-select-card {
