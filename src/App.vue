@@ -23,15 +23,9 @@
   </transition>
   <transition name="delay-fade">
     <div v-show="sessioned" class="main-container">
-      <div class="navbar">
-        <p>
-          您以 「<span class="username">{{ username }}</span
-          >」 的身份登录
-          <input v-on:click="onLogout" type="button" value="注销" class="btn" />
-        </p>
-      </div>
+      <navbar :username="username" />
       <hr />
-      <Users />
+      <room-list />
       <hr />
       <Main />
       <hr />
@@ -54,18 +48,20 @@
 
 <script>
 import socket from "./socket";
-import Users from "./components/Users.vue";
+import RoomList from "./components/RoomList.vue";
 import Main from "./components/Main.vue";
 import Scene from "./components/Scene.vue";
 import Message from "./components/Message.vue";
+import Navbar from "./components/Navbar.vue";
 
 export default {
   name: "App",
   components: {
-    Users,
+    RoomList,
     Main,
     Scene,
     Message,
+    Navbar,
   },
   data() {
     return {
@@ -89,6 +85,7 @@ export default {
       socket.auth = { sessionID }; // attach the session ID to the next reconnection attempts
       localStorage.setItem("sessionID", sessionID); // store it in the localStorage
       socket.userID = userID; // save the ID of the user
+      console.log(socket.userID);
       this.sessioned = true;
       this.username = username;
     });
@@ -102,18 +99,15 @@ export default {
         location.reload();
       }
     });
-    socket.on("server_error", (err) => {
-      console.error(`[server] ` + err.message);
-    });
     socket.on("finish logout", () => {
       this.onClearCache();
       location.reload();
     });
-    socket.on('display message', (type, text, delay = 3000) => {
+    socket.on("display message", (type, text, delay = 3000) => {
       this.addMessage(type, text, delay);
     });
     socket.on("room list update", () => {
-      this.addMessage('success', '成功刷新房间列表');
+      this.addMessage("success", "成功刷新房间列表");
     });
   },
   methods: {
@@ -125,20 +119,17 @@ export default {
       socket.auth = { username: this.username };
       socket.connect();
     },
-    onLogout() {
-      socket.emit("logout");
-    },
-    addMessage (type, text, delay = 3000) {
+    addMessage(type, text, delay = 3000) {
       const id = new Date().getTime();
       this.messageList.unshift({
         id: id,
         text: text,
         type: type,
-        delay: delay
+        delay: delay,
       });
       this.$nextTick(function () {
         setTimeout(() => {
-          this.messageList = this.messageList.filter(msg => msg.id !== id);
+          this.messageList = this.messageList.filter((msg) => msg.id !== id);
         }, delay);
       });
     },
@@ -152,7 +143,6 @@ export default {
   height: 100vh;
   overflow: hidden;
 }
-
 
 .fade-enter-active,
 .fade-leave-active {
@@ -181,7 +171,9 @@ export default {
 }
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    "Microsoft YaHei", "WenQuanYi Micro Hei", "Microsoft YaHei UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   position: relative;
@@ -192,10 +184,6 @@ export default {
 
 body {
   margin: 0;
-}
-
-.navbar .username {
-  font-weight: bold;
 }
 
 .user-select-card {
@@ -215,7 +203,7 @@ body {
   position: relative;
   border-radius: 0.3em;
   float: left;
-  margin: 5px;
+  margin: 5px 7px 5px 3px;
   user-select: none;
 }
 
@@ -234,8 +222,7 @@ body {
   padding: 0 0.8em 0.8em;
 }
 
-.main::after,
-.users::after {
+.clear-fix::after {
   content: "";
   display: block;
   clear: both;
@@ -246,7 +233,7 @@ body {
   background-color: white;
   border: 1px solid black;
   border-radius: 3px;
-  padding: 2px 6px;
+  padding: 4px 6px 2px;
   font-size: 1em;
   transition: all 0.3s ease;
 }

@@ -12,16 +12,16 @@ export default {
     text: String,
     type: String,
   },
-  data () {
+  data() {
     const class_name = {
-      error: 'iconfont icon-delete-filling',
-      success: 'iconfont icon-success-filling',
-      info: 'iconfont icon-prompt-filling'
-    }
+      error: "iconfont icon-delete-filling",
+      success: "iconfont icon-success-filling",
+      info: "iconfont icon-prompt-filling",
+    };
     return {
-      icon: class_name[this.type]
-    }
-  }
+      icon: class_name[this.type],
+    };
+  },
 };
 </script>
 
@@ -42,7 +42,7 @@ export default {
   background-color: white;
   width: max-content;
   transition: all 0.5s ease;
-  user-select:none;
+  user-select: none;
 }
 .message-icon {
   font-size: 1.5em;

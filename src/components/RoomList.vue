@@ -1,24 +1,22 @@
 <template>
-  <div class="users">
+  <div class="roomer clear-fix">
     <div v-if="type === 'room_list'">
-      <h3>
-        房间列表
-        <input
-          type="button"
-          class="btn"
-          value="刷新状态"
-          v-on:click="onUpdateRoomList"
+      <h3>房间列表</h3>
+      <span class="btn" v-on:click="onUpdateRoomList">
+        <span class="iconfont icon-refresh"></span>
+        刷新
+      </span>
+      <div class="room-list clear-fix">
+        <room-card
+          v-for="room in roomList"
+          :key="room.vid"
+          :room="room"
+          :onClick="() => onSelectRoom(room.id)"
         />
-      </h3>
-      <room-card
-        v-for="room in roomList"
-        :key="room.vid"
-        :room="room"
-        :onClick="() => onSelectRoom(room.id)"
-      />
+      </div>
     </div>
     <div v-if="type === 'room_info'">
-      <room-info :room="roomInfo" />
+      <room-info :room="roomInfo" :selfid="selfid" />
     </div>
   </div>
 </template>
@@ -40,9 +38,14 @@ export default {
       type: "empty",
       roomList: [],
       roomInfo: null,
+      selfid: "",
     };
   },
   created() {
+    socket.on("session", ({ userID, }) => {
+      this.selfid = userID; // save the ID of the user
+      console.log(userID);
+    });
     socket.on("room info", (room) => {
       this.roomInfo = room;
       this.type = "room_info";
@@ -74,4 +77,7 @@ export default {
 </script>
 
 <style>
+.room-list {
+  margin-top: 1em;
+}
 </style>

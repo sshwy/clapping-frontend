@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main clear-fix">
     <div v-if="type === 'room_info' && self_stat === 'roomed'">
       <input type="button" value="准备" class="btn" v-on:click="onReady" />
       <input type="button" value="退出" class="btn" v-on:click="onLeave" />
