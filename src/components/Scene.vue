@@ -1,12 +1,14 @@
 <template>
   <div class="scene">
     <div v-show="type === 'draw'">
-      <movement-log
-        v-for="item of draw_sentences"
-        :key="item.id"
-        :description="item"
-        :selfname="selfname"
-      />
+      <transition-group name="movement-log-list" tag="div">
+        <movement-log
+          v-for="item of draw_sentences"
+          :key="item.id"
+          :description="item"
+          :selfname="selfname"
+        />
+      </transition-group>
     </div>
   </div>
 </template>
@@ -58,4 +60,20 @@ export default {
 </script>
 
 <style>
+.movement-log-list-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+.movement-log-list-enter-active,
+.movement-log-list-leave-active {
+  transition: all 1s ease;
+}
+.movement-log-list-enter-from,
+.movement-log-list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.movement-log-list-move {
+  transition: transform 0.8s ease;
+}
 </style>

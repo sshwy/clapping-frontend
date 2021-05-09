@@ -49,10 +49,6 @@ export default {
       this.roomInfo = room;
       this.type = "room_info";
     });
-    // socket.on("room info ingame", (room) => {
-    //   this.roomInfo = room;
-    //   this.type = "room_info";
-    // });
     const onRoomList = (rooms) => {
       this.roomList = rooms.map((room) => ({
         ...room,

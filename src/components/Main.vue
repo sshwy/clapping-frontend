@@ -21,26 +21,30 @@
         v-for="u in room_info_ingame.players"
         :key="u.id"
         :user="u"
-        :selectable="on_select_target && u.id !== room_status?.self?.id && u.stat !== dead"
+        :selectable="
+          on_select_target && u.id !== room_status?.self?.id && u.stat !== dead
+        "
         :onClick="() => onSelectMovement(selected_move, u.id)"
       />
     </div>
 
     <div v-if="type === 'terminate'" v-html="message"></div>
-    <div v-if="type === 'req_move'">
-      <move-card
-        v-for="move in moveList"
-        :key="move.id"
-        :move="move"
-        v-on:click="() => onSelectMove(move.id)"
-      />
-    </div>
     <div v-if="type === 'submitted' && room_status?.self?.name">
       <movement-log
         :description="submitted_movement"
         :selfname="room_status.self.name"
       />
     </div>
+    <transition name="fade-top">
+      <div v-if="type === 'req_move'" class="clear-fix moves">
+        <move-card
+          v-for="move in moveList"
+          :key="move.id"
+          :move="move"
+          v-on:click="() => onSelectMove(move.id)"
+        />
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -86,7 +90,7 @@ export default {
     socket.on("room info ingame", (room) => {
       this.room_info_ingame = room;
       this.turn = room.turn;
-      this.point = room.players.find(e => e.id === socket.userID)?.point;
+      this.point = room.players.find((e) => e.id === socket.userID)?.point;
       this.ingame = true;
     });
     socket.on("room list", () => {
@@ -143,4 +147,22 @@ export default {
 </script>
 
 <style>
+.moves {
+  overflow: hidden;
+  transition: all 0.5s ease;
+  max-height: 100vh;
+}
+
+.fade-top-enter-active,
+.fade-top-leave-active {
+  transition: all 0.5s ease;
+}
+
+.fade-top-enter-from,
+.fade-top-leave-to {
+  overflow: hidden;
+  opacity: 0;
+  /* transform: translateY(-50px); */
+  max-height: 0;
+}
 </style>
