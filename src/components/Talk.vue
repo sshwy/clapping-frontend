@@ -6,9 +6,10 @@
         type="text"
         v-model="text"
         placeholder="来 bb 几句？"
+        :disabled="disable"
         :style="{
           lineHeight: '1.5em',
-          width: inputWidth
+          width: inputWidth,
         }"
       />
       <input type="submit" value="" style="display: none" v-on:click="onTalk" />
@@ -28,6 +29,7 @@ export default {
     return {
       text: "",
       type: "empty",
+      disable: false,
     };
   },
   created() {
@@ -48,6 +50,12 @@ export default {
       } else {
         socket.emit("talk", this.text);
         this.text = "";
+        this.disable = true;
+        this.$nextTick(function () {
+          setTimeout(() => {
+            this.disable = false;
+          }, 2000);
+        });
       }
     },
   },
@@ -69,5 +77,8 @@ input::placeholder {
     Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     "Microsoft YaHei", "WenQuanYi Micro Hei", "Microsoft YaHei UI", sans-serif;
   font-size: 90%;
+}
+input[disabled] {
+  background-color: rgb(206, 206, 206);
 }
 </style>
