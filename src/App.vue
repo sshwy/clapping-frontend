@@ -36,6 +36,7 @@
       <room-list />
       <Main />
       <hr />
+      <Talk :addMessage="addMessage"/>
       <Scene />
     </div>
   </transition>
@@ -60,6 +61,7 @@ import Main from "./components/Main.vue";
 import Scene from "./components/Scene.vue";
 import Message from "./components/Message.vue";
 import Navbar from "./components/Navbar.vue";
+import Talk from "./components/Talk.vue";
 
 export default {
   name: "App",
@@ -69,6 +71,7 @@ export default {
     Scene,
     Message,
     Navbar,
+    Talk,
   },
   data() {
     return {

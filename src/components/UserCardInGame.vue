@@ -6,10 +6,17 @@
       >{{ selectable ? "选择" : stat_data?.title }}</span
     >
     <span class="username">{{ user.name }}</span>
+    <transition name="shake">
+      <span v-if="says" class="say">
+        <span class="iconfont icon-comment"></span>
+        {{ says }}
+      </span>
+    </transition>
   </div>
 </template>
 
 <script>
+import socket from "../socket";
 import { player_stat_info } from "../utils";
 
 export default {
@@ -22,7 +29,20 @@ export default {
   data() {
     return {
       stat_data: player_stat_info[this.user.stat],
+      says: "",
     };
+  },
+  created() {
+    socket.on("speak", (id, text) => {
+      if (id === this.user.id) {
+        this.says = text;
+        this.$nextTick(function () {
+          setTimeout(() => {
+            this.says = "";
+          }, 5000);
+        });
+      }
+    });
   },
   updated() {
     this.stat_data = player_stat_info[this.user.stat];
