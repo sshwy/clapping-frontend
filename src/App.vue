@@ -234,12 +234,12 @@ body {
   background-color: #cfcfcf;
 }
 .card-title {
-  padding: 0.8em 0.7em;
+  margin: 0.8em 0.7em;
   font-weight: bold;
   font-size: 1.1em;
 }
 .card-content {
-  padding: 0 0.8em 0.8em;
+  margin: 0.8em;
 }
 
 .clear-fix::after {

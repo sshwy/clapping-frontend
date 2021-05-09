@@ -42,6 +42,8 @@
           :key="move.id"
           :move="move"
           v-on:click="() => onSelectMove(move.id)"
+          :helpkey="movement_help_key"
+          :onHelp="onMovementHelp"
         />
       </div>
     </transition>
@@ -78,6 +80,7 @@ export default {
       turn: 0,
       point: 0,
       dead: PlayerStatus.WATCHING,
+      movement_help_key: "",
     };
   },
   created() {
@@ -141,6 +144,13 @@ export default {
       this.type = "finished";
       this.on_select_target = false;
       socket.emit("movement", { move, target });
+    },
+    onMovementHelp(key) {
+      if (this.movement_help_key === key) {
+        this.movement_help_key = "";
+      } else {
+        this.movement_help_key = key;
+      }
     },
   },
 };
