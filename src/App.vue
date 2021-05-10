@@ -1,4 +1,5 @@
 <template>
+  <global-css />
   <transition name="fade">
     <div
       v-if="!sessioned"
@@ -62,6 +63,7 @@ import Scene from "./components/Scene.vue";
 import Message from "./components/Message.vue";
 import Navbar from "./components/Navbar.vue";
 import Talk from "./components/Talk.vue";
+import GlobalCss from './components/GlobalCss.vue';
 
 export default {
   name: "App",
@@ -72,6 +74,7 @@ export default {
     Message,
     Navbar,
     Talk,
+    GlobalCss,
   },
   data() {
     return {
@@ -150,9 +153,6 @@ export default {
 </script>
 
 <style>
-body {
-  overflow-y: hidden;
-}
 #app {
   width: 100vw;
   height: 100vh;
@@ -192,13 +192,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   position: relative;
-}
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
 }
 
 .username-submit-btn:hover {

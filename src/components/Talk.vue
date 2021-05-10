@@ -221,7 +221,7 @@ input[disabled] {
   display: block;
   list-style-type: none;
   padding: 7px;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 .exp-item:hover {
   cursor: pointer;

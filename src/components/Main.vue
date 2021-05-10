@@ -14,7 +14,8 @@
     </div>
 
     <div v-if="type !== 'empty' && type !== 'room_info'">
-      「第 {{ turn }} 回合」你拥有 {{ point }} 行动点
+      <div>第 {{ turn }} 回合」你拥有 {{ point }} 行动点</div>
+      <div v-if="remain_time">你还剩 {{ remain_time }} 秒</div>
     </div>
     <div v-if="ingame">
       <user-card-in-game
@@ -81,6 +82,7 @@ export default {
       point: 0,
       dead: PlayerStatus.WATCHING,
       movement_help_key: "",
+      remain_time: 0,
     };
   },
   created() {
@@ -108,12 +110,22 @@ export default {
       this.type = "terminate";
       this.message = "牛逼！";
     });
-    socket.on("request movement", (status) => {
+    socket.on("request movement", (status, timeout) => {
+      clearInterval(this.req_movement_interval);
       this.room_status = status;
       this.turn = status.turn;
       this.point = status.self.movePoint;
       this.moveList = suggestMovement(status.self.movePoint);
       this.type = "req_move";
+
+      this.remain_time = Math.floor((timeout - new Date().getTime()) / 1000);
+      this.req_movement_interval = setInterval(() => {
+        this.remain_time--;
+        if (this.remain_time < 0) {
+          clearInterval(this.req_movement_interval);
+          this.remain_time = 0;
+        }
+      }, 1000);
     });
     socket.on("submitted movement", (data) => {
       this.submitted_movement = data;
@@ -141,6 +153,8 @@ export default {
       }
     },
     onSelectMovement(move, target) {
+      clearInterval(this.req_movement_interval);
+      this.remain_time = 0;
       this.type = "finished";
       this.on_select_target = false;
       socket.emit("movement", { move, target });

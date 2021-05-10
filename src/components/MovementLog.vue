@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { MoveData } from "../utils";
+import store from '../dataStore';
 
 export default {
   name: "MovementLog",
@@ -37,7 +37,7 @@ export default {
     const checkSelf = (origin, self) => (origin === self ? "你" : origin);
     return {
       hasTarget: Boolean(this.description.to),
-      move_title: MoveData[this.description.move]?.title,
+      move_title: '',
       from: checkSelf(this.description.from, this.selfname),
       to: this.description.to,
       turn: this.description.turn,
@@ -46,6 +46,12 @@ export default {
       type: this.description.type,
       text: this.description.text,
     };
+  },
+  created () {
+    this.move_title = store.get('games')[0].movement_group.movement_list[this.description.move]?.title;
+  },
+  updated () {
+    this.move_title = store.get('games')[0].movement_group.movement_list[this.description.move]?.title;
   },
 };
 </script>

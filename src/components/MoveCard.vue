@@ -37,8 +37,6 @@
 </template>
 
 <script>
-// import { MoveData } from "../utils";
-
 export default {
   name: "MoveCard",
   props: {
@@ -55,16 +53,6 @@ export default {
   updated() {
     this.displayHelp = this.helpkey === this.move.id;
   },
-  // created() {
-  // this generates movement card css style
-  // let tot = "";
-  // for (const key in MoveData) {
-  //   const move = MoveData[key];
-  //   tot += `.card.movement-card.movement-${move.id} {\n background-color: ${move.background_color};\n}\n`;
-  //   tot += `.card.movement-card.movement-${move.id}:hover {\n background-color: ${move.background_color_hover};\n}\n`;
-  // }
-  // console.log(tot);
-  // },
 };
 </script>
 
@@ -109,94 +97,4 @@ span.iconfont.icon-help-filling {
   line-height: 1.5em;
 }
 
-.card.movement-card.movement-0 {
-  background-color: #8bc34a;
-}
-.card.movement-card.movement-0:hover {
-  background-color: #689f38;
-}
-.card.movement-card.movement-1 {
-  background-color: #8bc34a;
-}
-.card.movement-card.movement-1:hover {
-  background-color: #689f38;
-}
-.card.movement-card.movement-2 {
-  background-color: #00bcd4;
-}
-.card.movement-card.movement-2:hover {
-  background-color: #0097a7;
-}
-.card.movement-card.movement-3 {
-  background-color: #00bcd4;
-}
-.card.movement-card.movement-3:hover {
-  background-color: #0097a7;
-}
-.card.movement-card.movement-4 {
-  background-color: #ffc107;
-}
-.card.movement-card.movement-4:hover {
-  background-color: #ff6f00;
-}
-.card.movement-card.movement-5 {
-  background-color: #ff5722;
-}
-.card.movement-card.movement-5:hover {
-  background-color: #bf360c;
-}
-.card.movement-card.movement-6 {
-  background-color: #ab47bc;
-}
-.card.movement-card.movement-6:hover {
-  background-color: #6a1b9a;
-}
-.card.movement-card.movement-7 {
-  background-color: #00bcd4;
-}
-.card.movement-card.movement-7:hover {
-  background-color: #0097a7;
-}
-.card.movement-card.movement-8 {
-  background-color: #ffc107;
-}
-.card.movement-card.movement-8:hover {
-  background-color: #ff6f00;
-}
-.card.movement-card.movement-9 {
-  background-color: #ff5722;
-}
-.card.movement-card.movement-9:hover {
-  background-color: #bf360c;
-}
-.card.movement-card.movement-10 {
-  background-color: #ab47bc;
-}
-.card.movement-card.movement-10:hover {
-  background-color: #6a1b9a;
-}
-.card.movement-card.movement-11 {
-  background-color: #00bcd4;
-}
-.card.movement-card.movement-11:hover {
-  background-color: #0097a7;
-}
-.card.movement-card.movement-12 {
-  background-color: #ffc107;
-}
-.card.movement-card.movement-12:hover {
-  background-color: #ff6f00;
-}
-.card.movement-card.movement-13 {
-  background-color: #ff5722;
-}
-.card.movement-card.movement-13:hover {
-  background-color: #bf360c;
-}
-.card.movement-card.movement-14 {
-  background-color: #00bcd4;
-}
-.card.movement-card.movement-14:hover {
-  background-color: #0097a7;
-}
 </style>
