@@ -3,7 +3,7 @@
     <div class="room-title">
       <h3>房间 #{{ room.id }}</h3>
     </div>
-    <div v-if="isLeader" class="game-config">
+    <div v-if="isLeader" class="game-manage">
       <form>
         <ul class="game-list">
           <li
@@ -101,5 +101,8 @@ export default {
 }
 .game-list-item {
   user-select: none;
+}
+.game-config {
+  margin: 1em 0;
 }
 </style>

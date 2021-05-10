@@ -6,11 +6,7 @@
     <span class="username">
       {{ user.name }}
     </span>
-    <span
-      v-show="player_stat_info[user.stat]?.class === 'player-ready'"
-      class="tag ready-tag"
-      >已准备</span
-    >
+    <span v-show="isReady" class="tag ready-tag">已准备</span>
     <span v-if="isleader" class="tag leader-tag">房主</span>
     <span
       v-if="editable"
@@ -18,6 +14,13 @@
       v-on:click="() => onKick(user.id)"
       >踢了</span
     >
+    <span
+      v-if="editable && !isReady"
+      class="tag btn hurry-btn"
+      v-on:click="() => onHurry(user.id)"
+      >催他准备</span
+    >
+    <span v-if="editable && !isReady && hurry_times" class="hurry-times">✕{{ hurry_times }}</span>
     <transition name="shake">
       <span v-if="says" class="say">
         <span class="iconfont icon-comment"></span>
@@ -42,7 +45,13 @@ export default {
     return {
       player_stat_info: player_stat_info,
       says: "",
+      hurry_times: 0,
     };
+  },
+  computed: {
+    isReady() {
+      return this.player_stat_info[this.user.stat]?.class === "player-ready";
+    },
   },
   created() {
     socket.on("speak", (id, text) => {
@@ -51,7 +60,7 @@ export default {
         this.$nextTick(function () {
           setTimeout(() => {
             this.says = "";
-          }, 5000);
+          }, 2000);
         });
       }
     });
@@ -59,6 +68,14 @@ export default {
   methods: {
     onKick(id) {
       socket.emit("kick player", id);
+    },
+    onHurry(id) {
+      clearTimeout(this.hurry_timeout);
+      socket.emit("hurry player", id);
+      this.hurry_times ++;
+      this.hurry_timeout = setTimeout(() => {
+        this.hurry_times = 0;
+      }, 5000);
     },
   },
 };
@@ -108,6 +125,12 @@ export default {
   display: inline;
   border: none;
   background-color: #f44336;
+  color: white;
+}
+.user-list-item .hurry-btn {
+  display: inline;
+  border: none;
+  background-color: #ffa726;
   color: white;
 }
 
