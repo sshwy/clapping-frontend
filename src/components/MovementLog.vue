@@ -13,19 +13,21 @@
   </p>
   <p v-else-if="type === 'move' && hasTarget" class="movement-log move-log">
     <span v-if="turn" class="turn">「第 {{ turn }} 回合」</span>
-    <span class="from">{{ from }}</span> 对
-    <span class="to">{{ to }}</span> 发动了
-    <span class="move">{{ move_title }}</span>
+    <span class="from">{{ emitter }}</span> 对
+    <span class="to">{{ reciver }}</span> 发动了
+    <span class="move">{{ moveTitle }}</span>
   </p>
   <p v-else class="movement-log">
     <span v-if="turn" class="turn">「第 {{ turn }} 回合」</span>
-    <span class="from">{{ from }}</span> 发动了
-    <span class="move">{{ move_title }}</span>
+    <span class="from">{{ emitter }}</span> 发动了
+    <span class="move">{{ moveTitle }}</span>
   </p>
 </template>
 
 <script>
-import store from '../dataStore';
+import store from "../dataStore";
+
+const checkSelf = (origin, self) => (origin === self ? "你" : origin);
 
 export default {
   name: "MovementLog",
@@ -34,24 +36,31 @@ export default {
     selfname: String,
   },
   data() {
-    const checkSelf = (origin, self) => (origin === self ? "你" : origin);
     return {
       hasTarget: Boolean(this.description.to),
-      move_title: '',
-      from: checkSelf(this.description.from, this.selfname),
-      to: this.description.to,
       turn: this.description.turn,
-      die: checkSelf(this.description.die, this.selfname),
-      win: checkSelf(this.description.win, this.selfname),
       type: this.description.type,
       text: this.description.text,
     };
   },
-  created () {
-    this.move_title = store.get('games')[0].movement_group.movement_list[this.description.move]?.title;
-  },
-  updated () {
-    this.move_title = store.get('games')[0].movement_group.movement_list[this.description.move]?.title;
+  computed: {
+    emitter() {
+      return checkSelf(this.description.from, this.selfname);
+    },
+    reciver() {
+      return checkSelf(this.description.to, this.selfname);
+    },
+    die() {
+      return checkSelf(this.description.die, this.selfname);
+    },
+    win() {
+      return checkSelf(this.description.win, this.selfname);
+    },
+    moveTitle() {
+      return store.get("games")[0].movement_group.movement_list[
+        this.description.move
+      ]?.title;
+    },
   },
 };
 </script>
@@ -67,6 +76,9 @@ export default {
   font-weight: bold;
 }
 .movement-log .die {
+  font-weight: bold;
+}
+.movement-log .win {
   font-weight: bold;
 }
 .movement-log.die-log .turn {

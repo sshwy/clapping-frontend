@@ -45,13 +45,10 @@ export default {
     onHelp: Function,
     onClick: Function,
   },
-  data() {
-    return {
-      displayHelp: this.helpkey === this.move.id,
-    };
-  },
-  updated() {
-    this.displayHelp = this.helpkey === this.move.id;
+  computed: {
+    displayHelp() {
+      return this.helpkey === this.move.id;
+    },
   },
 };
 </script>
@@ -96,5 +93,4 @@ span.iconfont.icon-help-filling {
   max-width: 400px;
   line-height: 1.5em;
 }
-
 </style>
