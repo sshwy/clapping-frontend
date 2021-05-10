@@ -19,12 +19,30 @@
     <span v-if="turn" class="turn">「第 {{ turn }} 回合」</span>
     <span class="username from">{{ emitter }}</span> 对
     <span class="username to">{{ reciver }}</span> 发动了
-    <span class="move">{{ moveTitle }}</span>
+    <span class="move"
+      ><span class="move-title">{{ move.title }}</span>
+      <span class="movement-image-list"
+        ><img
+          v-for="(src, idx) in move.image_list"
+          :key="idx"
+          :src="src"
+          :alt="src"
+      /></span>
+    </span>
   </p>
   <p v-else class="movement-log">
     <span v-if="turn" class="turn">「第 {{ turn }} 回合」</span>
     <span class="username from">{{ emitter }}</span> 发动了
-    <span class="move">{{ moveTitle }}</span>
+    <span class="move"
+      ><span class="move-title">{{ move.title }}</span>
+      <span class="movement-image-list"
+        ><img
+          v-for="(src, idx) in move.image_list"
+          :key="idx"
+          :src="src"
+          :alt="src"
+      /></span>
+    </span>
   </p>
 </template>
 
@@ -38,6 +56,7 @@ export default {
   props: {
     description: Object,
     selfname: String,
+    gameid: Number,
   },
   data() {
     return {
@@ -63,8 +82,13 @@ export default {
     win() {
       return checkSelf(this.description.win, this.selfname);
     },
+    move() {
+      return store.get("games")[this.gameid].movement_group.movement_list[
+        this.description.move
+      ];
+    },
     moveTitle() {
-      return store.get("games")[0].movement_group.movement_list[
+      return store.get("games")[this.gameid].movement_group.movement_list[
         this.description.move
       ]?.title;
     },

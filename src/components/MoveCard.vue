@@ -4,7 +4,14 @@
     v-on:click="onClick"
   >
     <div class="room-card-title card-title">
-      {{ move.title }}
+      <span class="movement-title">{{ move.title }}</span>
+      <span class="movement-image-list"
+        ><img
+          v-for="(src, idx) in move.image_list"
+          :key="idx"
+          :src="src"
+          :alt="src"
+      /></span>
     </div>
     <div class="room-card-content card-content">
       需要 {{ move.point }} 行动点
@@ -65,7 +72,7 @@ export default {
   cursor: pointer;
 }
 .movement-card {
-  width: 150px;
+  width: 170px;
 }
 span.iconfont.icon-help-filling {
   position: absolute;
@@ -92,5 +99,18 @@ span.iconfont.icon-help-filling {
   margin: 0.8em;
   max-width: 400px;
   line-height: 1.5em;
+}
+.movement-image-list {
+  display: inline-block;
+  margin-left: 5px;
+}
+.movement-image-list img {
+  height: 1.1em;
+  vertical-align: -0.15em;
+  background-color: white;
+  border-radius: 3px;
+}
+.movement-image-list img + img {
+  margin-left: 3px;
 }
 </style>

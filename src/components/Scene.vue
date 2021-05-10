@@ -7,6 +7,7 @@
           :key="item.id"
           :description="item"
           :selfname="selfname"
+          :gameid="game_id"
         />
       </transition-group>
     </div>
@@ -28,10 +29,12 @@ export default {
       draw_data: null,
       draw_sentences: [],
       selfname: "",
+      game_id: 0,
     };
   },
   created() {
     socket.on("draw", (data) => {
+      this.game_id = data.game_id;
       this.draw_data = data;
       this.draw_sentences.unshift(...data.logs);
       this.selfname = socket.username;

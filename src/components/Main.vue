@@ -34,6 +34,7 @@
       <movement-log
         :description="submitted_movement"
         :selfname="room_status.self.name"
+        :gameid="game_id"
       />
     </div>
     <transition name="fade-top">
@@ -83,6 +84,7 @@ export default {
       dead: PlayerStatus.WATCHING,
       movement_help_key: "",
       remain_time: 0,
+      game_id: 0,
     };
   },
   created() {
@@ -91,12 +93,14 @@ export default {
       this.type = "room_info";
       this.self_stat = stat === PlayerStatus.ROOMED ? "roomed" : "ready";
       this.ingame = false;
+      this.game_id = room.game_id;
     });
     socket.on("room info ingame", (room) => {
       this.room_info_ingame = room;
       this.turn = room.turn;
       this.point = room.players.find((e) => e.id === socket.userID)?.point;
       this.ingame = true;
+      this.game_id = room.game_id;
     });
     socket.on("room list", () => {
       this.type = "empty";

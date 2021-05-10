@@ -4,7 +4,7 @@
 
 <script>
 import socket from "../socket";
-import store from '../dataStore';
+import store from "../dataStore";
 
 export default {
   name: "GlobalCss",
@@ -20,7 +20,7 @@ export default {
     this.styleEl.innerHTML = this.styleStr;
 
     socket.on("session", ({ games }) => {
-      store.set('games', games);
+      store.set("games", games);
       // console.log(games[0]);
       this.styleStr = this.styleStr + this.renderGameCSS(games[0]);
       this.styleEl.innerHTML = this.styleStr;
@@ -49,6 +49,10 @@ export default {
 <style>
 * {
   box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
 }
 
 body {
