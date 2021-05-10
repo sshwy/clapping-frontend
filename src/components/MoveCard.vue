@@ -65,7 +65,7 @@ export default {
   cursor: pointer;
 }
 .movement-card {
-  width: 130px;
+  width: 150px;
 }
 span.iconfont.icon-help-filling {
   position: absolute;

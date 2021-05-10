@@ -37,7 +37,7 @@
       <room-list />
       <Main />
       <hr />
-      <Talk :addMessage="addMessage"/>
+      <Talk :addMessage="addMessage" />
       <Scene />
     </div>
   </transition>
@@ -63,7 +63,7 @@ import Scene from "./components/Scene.vue";
 import Message from "./components/Message.vue";
 import Navbar from "./components/Navbar.vue";
 import Talk from "./components/Talk.vue";
-import GlobalCss from './components/GlobalCss.vue';
+import GlobalCss from "./components/GlobalCss.vue";
 
 export default {
   name: "App",
@@ -185,10 +185,12 @@ export default {
   }
 }
 
-#app {
+body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     "Microsoft YaHei", "WenQuanYi Micro Hei", "Microsoft YaHei UI", sans-serif;
+}
+#app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   position: relative;

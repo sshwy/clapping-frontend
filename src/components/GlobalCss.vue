@@ -55,4 +55,11 @@ body {
   overflow-y: hidden;
   margin: 0;
 }
+
+li {
+  list-style: none;
+}
+ul {
+  padding-inline-start: 0;
+}
 </style>

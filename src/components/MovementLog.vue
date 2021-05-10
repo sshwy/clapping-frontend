@@ -5,21 +5,25 @@
   </p>
   <p v-else-if="type === 'win'" class="movement-log win-log">
     <span v-if="turn" class="turn">「第 {{ turn }} 回合」</span>
-    <span class="win">{{ die }}</span> 吃鸡（狂喜）
+    <span class="username win">{{ win }}</span> 吃鸡（狂喜）
   </p>
   <p v-else-if="type === 'die'" class="movement-log die-log">
     <span v-if="turn" class="turn">「第 {{ turn }} 回合」</span>
-    <span class="die">{{ die }}</span> 没了（大悲）
+    <span class="username die">{{ die }}</span> 被
+    <span class="kiler-list">
+      <span v-for="u in killby" :key="u" class="killer">{{ u }}</span>
+    </span>
+    雷谱了（大悲）
   </p>
   <p v-else-if="type === 'move' && hasTarget" class="movement-log move-log">
     <span v-if="turn" class="turn">「第 {{ turn }} 回合」</span>
-    <span class="from">{{ emitter }}</span> 对
-    <span class="to">{{ reciver }}</span> 发动了
+    <span class="username from">{{ emitter }}</span> 对
+    <span class="username to">{{ reciver }}</span> 发动了
     <span class="move">{{ moveTitle }}</span>
   </p>
   <p v-else class="movement-log">
     <span v-if="turn" class="turn">「第 {{ turn }} 回合」</span>
-    <span class="from">{{ emitter }}</span> 发动了
+    <span class="username from">{{ emitter }}</span> 发动了
     <span class="move">{{ moveTitle }}</span>
   </p>
 </template>
@@ -53,6 +57,9 @@ export default {
     die() {
       return checkSelf(this.description.die, this.selfname);
     },
+    killby() {
+      return this.description.by.map((e) => checkSelf(e, this.selfname));
+    },
     win() {
       return checkSelf(this.description.win, this.selfname);
     },
@@ -66,20 +73,18 @@ export default {
 </script>
 
 <style>
-.movement-log .from {
+.movement-log .username {
   font-weight: bold;
 }
-.movement-log .to {
+.movement-log .killer {
   font-weight: bold;
+  color: #f44336;
+  margin-right: 5px;
 }
-.movement-log .move {
-  font-weight: bold;
-}
-.movement-log .die {
-  font-weight: bold;
-}
-.movement-log .win {
-  font-weight: bold;
+.killer + .killer::before {
+  display: inline;
+  content: ", ";
+  color: black;
 }
 .movement-log.die-log .turn {
   color: #f44336;

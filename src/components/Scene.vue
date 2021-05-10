@@ -35,7 +35,6 @@ export default {
       this.draw_data = data;
       this.draw_sentences.unshift(...data.logs);
       this.selfname = socket.username;
-      // console.log(this.draw_sentences);
 
       this.type = "draw";
 
