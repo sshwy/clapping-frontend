@@ -108,7 +108,7 @@ span.iconfont.icon-help-filling {
   height: 1.1em;
   vertical-align: -0.15em;
   background-color: white;
-  border-radius: 3px;
+  border-radius: 50% /*3px;*/
 }
 .movement-image-list img + img {
   margin-left: 3px;

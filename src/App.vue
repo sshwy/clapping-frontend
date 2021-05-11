@@ -1,35 +1,6 @@
 <template>
   <global-css />
-  <transition name="fade">
-    <div
-      v-if="!sessioned"
-      class="full-page"
-      :style="{
-        display: 'table',
-        position: 'absolute',
-      }"
-    >
-      <div class="user-register">
-        <form onsubmit="return false">
-          <input v-model="username" type="text" placeholder="取个名字吧 ^_^" />
-          <input
-            type="submit"
-            value=""
-            :style="{ display: 'none' }"
-            v-on:click="onUsernameSelection"
-          />
-          <span
-            class="iconfont icon-arrow-right-circle username-submit-btn"
-            :style="{
-              fontSize: '1.8em',
-              verticalAlign: '-0.2em',
-            }"
-            v-on:click="onUsernameSelection"
-          ></span>
-        </form>
-      </div>
-    </div>
-  </transition>
+  <register-page :sessioned="sessioned" />
   <transition name="delay-fade">
     <div v-show="sessioned" class="main-container">
       <navbar :username="username" />
@@ -57,6 +28,7 @@
 
 <script>
 import socket from "./socket";
+import RegisterPage from './components/RegisterPage.vue';
 import RoomList from "./components/RoomList.vue";
 import Main from "./components/Main.vue";
 import Scene from "./components/Scene.vue";
@@ -75,6 +47,7 @@ export default {
     Navbar,
     Talk,
     GlobalCss,
+    RegisterPage,
   },
   data() {
     return {
@@ -106,9 +79,9 @@ export default {
     socket.on("connect_error", (err) => {
       console.error(`[connect] ` + err.message);
       if (err.message === "invalid username") {
-        // clear cache and reload
+        this.addMessage('info', '你输入的用户名不太对劲哦');
         this.onClearCache();
-        location.reload();
+        // location.reload();
       } else if (err.message === "xhr poll error") {
         this.onClearCache();
         location.reload();
@@ -129,10 +102,6 @@ export default {
     onClearCache() {
       console.log("clear cache.");
       localStorage.removeItem("sessionID");
-    },
-    onUsernameSelection() {
-      socket.auth = { username: this.username };
-      socket.connect();
     },
     addMessage(type, text, delay = 3000) {
       const id = new Date().getTime();
@@ -157,16 +126,6 @@ export default {
   width: 100vw;
   height: 100vh;
   overflow-x: hidden;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
 }
 
 .delay-fade-enter-active {

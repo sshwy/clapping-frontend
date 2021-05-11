@@ -6,7 +6,6 @@
     <span class="username">
       {{ user.name }}
     </span>
-    <span v-show="isReady" class="tag ready-tag">已准备</span>
     <span v-if="isleader" class="tag leader-tag">房主</span>
     <span
       v-if="editable"
@@ -14,6 +13,7 @@
       v-on:click="() => onKick(user.id)"
       >踢了</span
     >
+    <span v-show="isReady" class="tag ready-tag">已准备</span>
     <span
       v-if="editable && !isReady"
       class="tag btn hurry-btn"
