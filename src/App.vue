@@ -2,14 +2,12 @@
   <global-css />
   <register-page :sessioned="sessioned" />
   <transition name="delay-fade">
-    <div v-show="sessioned" class="main-container">
+    <div v-show="sessioned">
       <navbar :username="username" />
-      <hr />
-      <room-list />
-      <Main />
-      <hr />
-      <Talk :addMessage="addMessage" />
-      <Scene />
+      <div class="main-container">
+        <room-list />
+        <Main />
+      </div>
     </div>
   </transition>
   <teleport to="body">
@@ -28,26 +26,22 @@
 
 <script>
 import socket from "./socket";
-import RegisterPage from './components/RegisterPage.vue';
+import RegisterPage from "./components/RegisterPage.vue";
 import RoomList from "./components/RoomList.vue";
-import Main from "./components/Main.vue";
-import Scene from "./components/Scene.vue";
+import Main from "./components/Main";
 import Message from "./components/Message.vue";
 import Navbar from "./components/Navbar.vue";
-import Talk from "./components/Talk.vue";
 import GlobalCss from "./components/GlobalCss.vue";
 
 export default {
   name: "App",
   components: {
     RoomList,
-    Main,
-    Scene,
     Message,
     Navbar,
-    Talk,
     GlobalCss,
     RegisterPage,
+    Main,
   },
   data() {
     return {
@@ -79,7 +73,7 @@ export default {
     socket.on("connect_error", (err) => {
       console.error(`[connect] ` + err.message);
       if (err.message === "invalid username") {
-        this.addMessage('info', '你输入的用户名不太对劲哦');
+        this.addMessage("info", "你输入的用户名不太对劲哦");
         this.onClearCache();
         // location.reload();
       } else if (err.message === "xhr poll error") {
@@ -117,6 +111,11 @@ export default {
         }, delay);
       });
     },
+  },
+  provide() {
+    return {
+      addMessage: this.addMessage,
+    };
   },
 };
 </script>
@@ -188,12 +187,12 @@ body {
   background-color: #cfcfcf;
 }
 .card-title {
-  margin: 0.8em 0.7em;
+  margin: 0.7em 0.6em;
   font-weight: bold;
   font-size: 1.1em;
 }
 .card-content {
-  margin: 0.8em;
+  margin: 0.7em;
 }
 
 .clear-fix::after {
@@ -237,6 +236,7 @@ input[type="text"] {
   font-size: 1.5em;
 }
 .main-container {
-  padding: 10px;
+  margin-top: 80px;
+  padding: 0 20px;
 }
 </style>

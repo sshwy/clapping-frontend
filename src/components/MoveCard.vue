@@ -48,7 +48,7 @@ export default {
   name: "MoveCard",
   props: {
     move: Object,
-    helpkey: String,
+    helpkey: Number,
     onHelp: Function,
     onClick: Function,
   },
@@ -72,7 +72,8 @@ export default {
   cursor: pointer;
 }
 .movement-card {
-  width: 170px;
+  min-width: 170px;
+  width: calc(20% - 10px);
 }
 span.iconfont.icon-help-filling {
   position: absolute;

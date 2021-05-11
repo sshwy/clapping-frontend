@@ -1,6 +1,6 @@
 <template>
   <div class="roomer clear-fix">
-    <div v-if="type === 'room_list'">
+    <div v-if="type === 'room_list'" class="room-list-container">
       <h3>房间列表</h3>
       <span class="btn" v-on:click="onUpdateRoomList">
         <span class="iconfont icon-refresh"></span>
@@ -15,22 +15,17 @@
         />
       </div>
     </div>
-    <div v-if="type === 'room_info'">
-      <room-info :room="roomInfo" :selfid="selfid" />
-    </div>
   </div>
 </template>
 
 <script>
 import socket from "../socket";
 import RoomCard from "./RoomCard.vue";
-import RoomInfo from "./RoomInfo.vue";
 
 export default {
   name: "User",
   components: {
     RoomCard,
-    RoomInfo,
   },
   data() {
     return {
@@ -78,5 +73,5 @@ export default {
 <style>
 .room-list {
   margin-top: 1em;
-}
+} 
 </style>

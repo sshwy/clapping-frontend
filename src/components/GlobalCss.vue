@@ -65,5 +65,7 @@ li {
 }
 ul {
   padding-inline-start: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 </style>

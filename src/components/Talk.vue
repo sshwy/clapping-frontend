@@ -1,65 +1,72 @@
 <template>
-  <div v-if="type !== 'empty'" class="talk">
-    <form onsubmit="return false">
-      <span class="iconfont icon-comment talk-label"></span>
-      <input
-        type="text"
-        v-model="text"
-        ref="talk_input"
-        placeholder="来 bb 几句？"
-        title="按下回车以发送消息"
-        v-on:focus="onFocus"
-        v-on:blur="onBlur"
-        :disabled="disable"
-        :style="{
-          lineHeight: '1.5em',
-          width: inputWidth * 1.02 + 3.5 + 'em',
-          fontFamily:
-            'monospace, Microsoft YaHei, WenQuanYi Micro Hei, Microsoft YaHei UI, sans-serif',
-        }"
-      />
-      <input type="submit" value="" style="display: none" v-on:click="onTalk" />
-      <span :class="['word-counter', text.length > 50 && 'exceed']">
-        {{ text.length }} / 50
-      </span>
-      <span
-        class="iconfont icon-add-circle addexp-btn"
-        title="添加到快捷词组"
-        v-on:click="onAddExpression"
-      ></span>
-    </form>
-  </div>
-  <transition name="fade-scale">
-    <div v-if="display_exp" class="expression-list-container">
-      <ul
-        class="exp-list"
-        :style="{
-          width: inputWidth * 1.02 + 5.3 + 'em',
-          minWidth: 'max-content',
-        }"
-      >
-        <li
-          v-for="s in expressionList"
-          :key="s"
-          class="exp-item"
-          v-on:click="
-            () => {
-              if (disable) return;
-              text = s;
-              onTalk();
-            }
-          "
-        >
-          <span class="text">{{ s }}</span>
-          <span
-            class="iconfont icon-close delete-exp-btn"
-            title="删除快捷词组"
-            v-on:click.stop="() => onRemoveExp(s)"
-          ></span>
-        </li>
-      </ul>
+  <div v-if="type !== 'empty'" class="talk-container">
+    <div class="talk-input">
+      <form onsubmit="return false">
+        <span class="iconfont icon-comment talk-label"></span>
+        <input
+          type="text"
+          v-model="text"
+          ref="talk_input"
+          placeholder="来 bb 几句？"
+          title="按下回车以发送消息"
+          v-on:focus="onFocus"
+          v-on:blur="onBlur"
+          :disabled="disable"
+          :style="{
+            lineHeight: '1.5em',
+            width: inputWidth * 1.02 + 3.5 + 'em',
+            fontFamily:
+              'monospace, Microsoft YaHei, WenQuanYi Micro Hei, Microsoft YaHei UI, sans-serif',
+          }"
+        />
+        <input
+          type="submit"
+          value=""
+          style="display: none"
+          v-on:click="onTalk"
+        />
+        <span :class="['word-counter', text.length > 50 && 'exceed']">
+          {{ text.length }} / 50
+        </span>
+        <span
+          class="iconfont icon-add-circle addexp-btn"
+          title="添加到快捷词组"
+          v-on:click="onAddExpression"
+        ></span>
+      </form>
     </div>
-  </transition>
+    <transition name="fade-scale">
+      <div v-if="display_exp" class="talk-exp-list-container">
+        <ul
+          class="exp-list"
+          :style="{
+            width: inputWidth * 1.02 + 5.3 + 'em',
+            minWidth: 'max-content',
+          }"
+        >
+          <li
+            v-for="s in expressionList"
+            :key="s"
+            class="exp-item"
+            v-on:click="
+              () => {
+                if (disable) return;
+                text = s;
+                onTalk();
+              }
+            "
+          >
+            <span class="text">{{ s }}</span>
+            <span
+              class="iconfont icon-close delete-exp-btn"
+              title="删除快捷词组"
+              v-on:click.stop="() => onRemoveExp(s)"
+            ></span>
+          </li>
+        </ul>
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -67,9 +74,7 @@ import socket from "../socket";
 
 export default {
   name: "Talk",
-  props: {
-    addMessage: Function,
-  },
+  inject: ["addMessage"],
   data() {
     const expressionList = (localStorage.getItem("quick-exp") || "")
       .split("<spliter>")
@@ -179,7 +184,7 @@ export default {
   transform: translateY(-50%) scaleY(0);
 }
 
-.talk {
+.talk-input {
   display: inline-block;
   position: relative;
 }
@@ -220,7 +225,7 @@ input[disabled] {
   position: relative;
   display: block;
   list-style-type: none;
-  padding: 7px;
+  padding: 7px 8px;
   transition: all 0.2s ease;
 }
 .exp-item:hover {
@@ -232,6 +237,8 @@ input[disabled] {
   padding-inline-start: 0;
   margin-left: 1.7em;
   user-select: none;
+  background-color: white;
+  box-shadow: 0px 1px 3px 0px #535353;
 }
 .delete-exp-btn {
   position: absolute;
@@ -243,5 +250,12 @@ input[disabled] {
 .delete-exp-btn:hover {
   cursor: pointer;
   color: #bdbdbd;
+}
+.talk-container {
+  position: relative;
+}
+.talk-exp-list-container {
+  position: absolute;
+  z-index: 200;
 }
 </style>
