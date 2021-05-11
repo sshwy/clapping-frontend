@@ -18,8 +18,9 @@
     </form>
   </div>
   <div v-else class="game-config">
-    <span class="game-title">{{ currentGameTitle }}</span>
+    <span class="game-title">{{ currentGameMeta.name }}</span>
   </div>
+  <div class="game-description">{{ currentGameMeta.description }}</div>
 </template>
 
 <script>
@@ -45,10 +46,11 @@ export default {
       return store.get("games").map((e, idx) => ({
         id: idx,
         name: e.name,
+        description: e.description,
       }));
     },
-    currentGameTitle() {
-      return this.gameMetaList[this.game_picked].name;
+    currentGameMeta() {
+      return this.gameMetaList[this.game_picked];
     },
   },
   updated() {
@@ -78,6 +80,7 @@ export default {
 }
 .game-list {
   line-height: 2em;
+  margin-bottom: 1em;
 }
 .game-list-item {
   user-select: none;

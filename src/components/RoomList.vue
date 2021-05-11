@@ -1,20 +1,22 @@
 <template>
   <div class="roomer clear-fix">
-    <div v-if="type === 'room_list'" class="room-list-container">
-      <h3>房间列表</h3>
-      <span class="btn" v-on:click="onUpdateRoomList">
-        <span class="iconfont icon-refresh"></span>
-        刷新
-      </span>
-      <div class="room-list clear-fix">
-        <room-card
-          v-for="room in roomList"
-          :key="room.vid"
-          :room="room"
-          :onClick="() => onSelectRoom(room.id)"
-        />
+    <transition name="fade">
+      <div v-if="type === 'room_list'" class="room-list-container">
+        <h3>房间列表</h3>
+        <span class="btn" v-on:click="onUpdateRoomList">
+          <span class="iconfont icon-refresh"></span>
+          刷新
+        </span>
+        <div class="room-list clear-fix">
+          <room-card
+            v-for="room in roomList"
+            :key="room.vid"
+            :room="room"
+            :onClick="() => onSelectRoom(room.id)"
+          />
+        </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -54,7 +56,7 @@ export default {
     socket.on("room list", onRoomList);
     socket.on("room list update", onRoomList);
     socket.on("game prepare", () => {
-      console.log('clear room list');
+      console.log("clear room list");
       this.type = "empty";
     });
   },
@@ -73,5 +75,5 @@ export default {
 <style>
 .room-list {
   margin-top: 1em;
-} 
+}
 </style>

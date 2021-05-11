@@ -52,9 +52,33 @@ function needTarget (move_id) {
   return Boolean(MoveData[move_id].need_target);
 }
 
+function debounce (f, delay_time = 2000) {
+  var is_ok = true;
+  return function (...args) {
+    const machine = {
+      ok () {
+        return is_ok;
+      },
+      delay () {
+        is_ok = false;
+        setTimeout(() => {
+          is_ok = true;
+        }, delay_time);
+      }
+    };
+    if (machine.ok()) {
+      machine.delay();
+      return f(...args);
+    } else {
+      console.log('delaying...');
+    }
+  }
+}
+
 export {
   player_stat_info,
   PlayerStatus,
   suggestMovement,
   needTarget,
+  debounce,
 }

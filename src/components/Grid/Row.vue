@@ -1,5 +1,14 @@
 <template>
-  <div :class="['grid-row', height !== undefined && `grid-row-h-${height}`, 'clear-fix']"> 
+  <div
+    :class="[
+      'grid-row',
+      isGridHeight && `grid-row-h-${height}`,
+      'clear-fix',
+    ]"
+    :style="{
+      height: getHeight,
+    }"
+  >
     <slot></slot>
   </div>
 </template>
@@ -8,6 +17,15 @@
 export default {
   props: {
     height: Number,
+  },
+  computed: {
+    isGridHeight() {
+      return this.height >= 1;
+    },
+    getHeight () {
+      if(this.height >= 1) return undefined;
+      return `${this.height * 100}%`;
+    },
   },
 };
 </script>

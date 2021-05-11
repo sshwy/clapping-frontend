@@ -61,6 +61,8 @@ export default {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+  position: absolute;
+  top: 60px;
 }
 
 </style>

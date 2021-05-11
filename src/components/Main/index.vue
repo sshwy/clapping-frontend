@@ -1,84 +1,87 @@
 <template>
-  <div
-    :style="{
-      height: 'calc(100vh - 80px)',
-    }"
-  >
-    <grid-layout>
-      <grid-row :height="2">
-        <div v-if="type === 'room_info'" class="room-title">
-          <h3>房间 #{{ room.id }}</h3>
-        </div>
-        <div v-if="type !== 'empty' && type !== 'room_info'">
-          <span
-            >「第 <span class="turn-number">{{ turn }}</span> 回合」你拥有
-            {{ point }} 行动点</span
-          >
-          <span v-if="remain_time">，你还剩 {{ remain_time }} 秒</span>
-        </div>
-      </grid-row>
-      <grid-row :height="10">
-        <grid-col :width="8">
-          <room-info
-            v-if="type === 'room_info'"
-            :room="room"
-            :selfid="selfid"
-            :selfstat="selfstat"
-          />
-          <div v-if="ingame">
-            <user-card-in-game
-              v-for="u in room_info_ingame.players"
-              :key="u.id"
-              :user="u"
-              :selectable="
-                on_select_target &&
-                u.id !== room_status?.self?.id &&
-                u.stat !== dead
-              "
-              :onClick="() => onSelectMovement(selected_move, u.id)"
-            />
+  <transition name="delay-fade">
+    <div
+      v-show="type !== 'empty'"
+      :style="{
+        height: 'calc(100vh - 80px)',
+      }"
+    >
+      <grid-layout>
+        <grid-row :height="0.06">
+          <div v-if="type === 'room_info'" class="room-title">
+            <h3>房间 #{{ room.id }}</h3>
           </div>
-        </grid-col>
-        <grid-col :width="16">
-          <game-info
-            v-if="type === 'room_info'"
-            :room="room"
-            :selfid="selfid"
-          />
-          <scene v-show="ingame" />
-        </grid-col>
-      </grid-row>
-      <grid-row :height="11">
-        <talk />
-        <div v-if="type === 'terminate'" v-html="message"></div>
-        <div
-          :style="{
-            position: 'relative',
-          }"
-        >
-          <transition name="fade-top">
-            <div v-if="type === 'req_move'" class="clear-fix moves">
-              <move-card
-                v-for="move in moveList"
-                :key="move.id"
-                :move="move"
-                :onClick="() => onSelectMove(move.id)"
-                :helpkey="movement_help_key"
-                :onHelp="onMovementHelp"
+          <div v-if="type !== 'empty' && type !== 'room_info'">
+            <span
+              >「第 <span class="turn-number">{{ turn }}</span> 回合」你拥有
+              {{ point }} 行动点</span
+            >
+            <span v-if="remain_time">，你还剩 {{ remain_time }} 秒</span>
+          </div>
+        </grid-row>
+        <grid-row :height="0.45">
+          <grid-col :width="16">
+            <game-info
+              v-if="type === 'room_info'"
+              :room="room"
+              :selfid="selfid"
+            />
+            <scene v-show="ingame" />
+          </grid-col>
+          <grid-col :width="8">
+            <div v-if="ingame">
+              <user-card-in-game
+                v-for="u in room_info_ingame.players"
+                :key="u.id"
+                :user="u"
+                :selectable="
+                  on_select_target &&
+                  u.id !== room_status?.self?.id &&
+                  u.stat !== dead
+                "
+                :onClick="() => onSelectMovement(selected_move, u.id)"
               />
             </div>
-          </transition>
-        </div>
-        <div v-if="type === 'submitted' && room_status?.self?.name">
-          <movement-log
-            :description="submitted_movement"
-            :selfname="room_status.self.name"
-            :gameid="game_id"
-          />
-        </div>
-      </grid-row>
-    </grid-layout>
-  </div>
+            <room-info
+              v-if="type === 'room_info'"
+              :room="room"
+              :selfid="selfid"
+              :selfstat="selfstat"
+            />
+          </grid-col>
+        </grid-row>
+        <grid-row :height="0.45">
+          <talk />
+          <div v-if="type === 'terminate'" v-html="message"></div>
+          <div
+            :style="{
+              position: 'relative',
+            }"
+          >
+            <transition name="fade-top">
+              <div v-if="type === 'req_move'" class="clear-fix moves">
+                <move-card
+                  v-for="move in moveList"
+                  :key="move.id"
+                  :move="move"
+                  :onClick="() => onSelectMove(move.id)"
+                  :helpkey="movement_help_key"
+                  :onHelp="onMovementHelp"
+                />
+              </div>
+            </transition>
+          </div>
+          <div v-if="type === 'submitted' && room_status?.self?.name">
+            <movement-log
+              :description="submitted_movement"
+              :selfname="room_status.self.name"
+              :gameid="game_id"
+            />
+          </div>
+        </grid-row>
+      </grid-layout>
+    </div>
+  </transition>
 </template>
 
 <script>

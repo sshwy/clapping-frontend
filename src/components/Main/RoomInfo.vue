@@ -9,22 +9,18 @@
         :editable="isLeader && u.id !== room.leader"
       />
     </div>
-    <div v-if="selfstat === 'roomed'">
-      <input type="button" value="准备" class="btn" v-on:click="onReady" />
-      <input type="button" value="退出" class="btn" v-on:click="onLeave" />
+    <div v-show="selfstat === 'roomed'">
+      <debounced-button :onClick="onReady">准备</debounced-button>
+      <debounced-button :onClick="onLeave">退出</debounced-button>
     </div>
-    <div v-if="selfstat === 'ready'">
-      <input
-        type="button"
-        value="取消"
-        class="btn"
-        v-on:click="onCancelReady"
-      />
+    <div v-show="selfstat === 'ready'">
+      <debounced-button :onClick="onCancelReady">取消</debounced-button>
     </div>
   </div>
 </template>
 
 <script>
+import DebouncedButton from "../DebouncedButton";
 import socket from "../../socket";
 import UserCard from "../UserCard";
 
@@ -32,6 +28,7 @@ export default {
   name: "RoomInfo",
   components: {
     UserCard,
+    DebouncedButton,
   },
   props: {
     room: Object,
@@ -60,6 +57,6 @@ export default {
 <style>
 .room-info {
   height: inherit;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 </style>
