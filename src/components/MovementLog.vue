@@ -15,7 +15,10 @@
     </span>
     雷谱了（大悲）
   </p>
-  <p v-else-if="move && type === 'move' && hasTarget" class="movement-log move-log">
+  <p
+    v-else-if="move && type === 'move' && hasTarget"
+    class="movement-log move-log"
+  >
     <span v-if="turn" class="turn">「第 {{ turn }} 回合」</span>
     <span class="username from">{{ emitter }}</span> 对
     <span class="username to">{{ reciver }}</span> 发动了
@@ -88,16 +91,20 @@ export default {
       ];
     },
   },
-  created (){
+  created() {
     console.log(this.move, this.gameid, this.description);
   },
-  updated () {
+  updated() {
     console.log(this.gameid);
-  }
+  },
 };
 </script>
 
 <style>
+.movement-log {
+  margin: 0.5em;
+  font-size: 90%;
+}
 .movement-log .username {
   font-weight: bold;
 }

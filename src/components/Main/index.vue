@@ -26,7 +26,7 @@
               :room="room"
               :selfid="selfid"
             />
-            <scene v-show="ingame" />
+            <log-board v-show="ingame" />
           </grid-col>
           <grid-col :width="8">
             <div v-if="ingame">
@@ -92,7 +92,7 @@ import RoomInfo from "./RoomInfo";
 import MoveCard from "../MoveCard";
 import MovementLog from "../MovementLog";
 import UserCardInGame from "../UserCardInGame";
-import Scene from "../Scene";
+import LogBoard from "../LogBoard";
 import Talk from "../Talk.vue";
 import { PlayerStatus, suggestMovement, needTarget } from "../../utils";
 
@@ -106,7 +106,7 @@ export default {
     MoveCard,
     MovementLog,
     UserCardInGame,
-    Scene,
+    LogBoard,
     Talk,
   },
   data() {
@@ -177,7 +177,7 @@ export default {
       this.room_status = status;
       this.turn = status.turn;
       this.point = status.self.movePoint;
-      this.moveList = suggestMovement(status.self.movePoint);
+      this.moveList = suggestMovement(status.self.movePoint, this.game_id);
       this.type = "req_move";
 
       this.remain_time = Math.floor((timeout - new Date().getTime()) / 1000);
@@ -196,7 +196,7 @@ export default {
   },
   methods: {
     onSelectMove(move) {
-      if (needTarget(move)) {
+      if (needTarget(move, this.game_id)) {
         console.log("selectTarget");
         this.selected_move = move;
         this.on_select_target = true;
