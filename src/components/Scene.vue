@@ -1,6 +1,6 @@
 <template>
   <div class="scene-wrapper">
-      <div class="scene-title">对战日志</div>
+    <div class="scene-title">对战日志</div>
     <div class="scene">
       <div v-show="type === 'draw'">
         <transition-group name="movement-log-list" tag="div">
@@ -61,8 +61,12 @@ export default {
         this.type = "empty";
       });
       socket.on("room info ingame", (room) => {
+        this.game_id = room.game_id;
+      });
+      socket.on("room info ingame", (room) => {
         this.selfname = socket.username;
         this.draw_sentences = room.battle_log;
+        this.game_id = room.game_id;
         this.type = "draw";
       });
     }

@@ -39,16 +39,16 @@ const player_stat_info = {
   },
 };
 
-function suggestMovement (move_point) {
-  const MoveData = store.get('games')[0].movement_group.movement_list;
+function suggestMovement (move_point, game_id) {
+  const MoveData = store.get('games')[game_id].movement_group.movement_list;
   let result = MoveData
     .filter(e => e.point <= move_point)
     .sort((a, b) => a.point - b.point);
   return result;
 }
 
-function needTarget (move_id) {
-  const MoveData = store.get('games')[0].movement_group.movement_list;
+function needTarget (move_id, game_id) {
+  const MoveData = store.get('games')[game_id].movement_group.movement_list;
   return Boolean(MoveData[move_id].need_target);
 }
 

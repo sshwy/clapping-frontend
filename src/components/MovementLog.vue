@@ -15,12 +15,12 @@
     </span>
     雷谱了（大悲）
   </p>
-  <p v-else-if="type === 'move' && hasTarget" class="movement-log move-log">
+  <p v-else-if="move && type === 'move' && hasTarget" class="movement-log move-log">
     <span v-if="turn" class="turn">「第 {{ turn }} 回合」</span>
     <span class="username from">{{ emitter }}</span> 对
     <span class="username to">{{ reciver }}</span> 发动了
     <span class="move"
-      ><span class="move-title">{{ move.title }}</span>
+      ><span class="move-title">{{ move?.title }}</span>
       <span class="movement-image-list"
         ><img
           v-for="(src, idx) in move.image_list"
@@ -30,11 +30,11 @@
       /></span>
     </span>
   </p>
-  <p v-else class="movement-log">
+  <p v-else-if="move" class="movement-log">
     <span v-if="turn" class="turn">「第 {{ turn }} 回合」</span>
     <span class="username from">{{ emitter }}</span> 发动了
     <span class="move"
-      ><span class="move-title">{{ move.title }}</span>
+      ><span class="move-title">{{ move?.title }}</span>
       <span class="movement-image-list"
         ><img
           v-for="(src, idx) in move.image_list"
@@ -87,12 +87,13 @@ export default {
         this.description.move
       ];
     },
-    moveTitle() {
-      return store.get("games")[this.gameid].movement_group.movement_list[
-        this.description.move
-      ]?.title;
-    },
   },
+  created (){
+    console.log(this.move, this.gameid, this.description);
+  },
+  updated () {
+    console.log(this.gameid);
+  }
 };
 </script>
 

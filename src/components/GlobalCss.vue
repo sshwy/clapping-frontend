@@ -21,8 +21,7 @@ export default {
 
     socket.on("session", ({ games }) => {
       store.set("games", games);
-      // console.log(games[0]);
-      this.styleStr = this.styleStr + this.renderGameCSS(games[0]);
+      this.styleStr = this.styleStr + this.renderGameCSS(games[4]);
       this.styleEl.innerHTML = this.styleStr;
     });
   },
