@@ -20,7 +20,7 @@
 <script>
 import socket from "../socket";
 import store from "../dataStore";
-import MovementLog from "./MovementLog.vue";
+import MovementLog from "./MovementLog";
 
 export default {
   name: "Scene",
