@@ -1,7 +1,7 @@
 <template>
   <div
-    :class="['card movement-card card-with-hover', 'movement-' + move.id]"
-    v-on:click="onClick"
+    :class="['card movement-card card-with-hover', 'movement-' + move.id, disabled && 'movement-disabled']"
+    v-on:click="onAvailableClick"
   >
     <div class="room-card-title card-title">
       <span class="movement-title">{{ move.title }}</span>
@@ -46,15 +46,26 @@
 <script>
 export default {
   name: "MoveCard",
+  inject: ['addMessage'],
   props: {
     move: Object,
     helpkey: Number,
     onHelp: Function,
     onClick: Function,
+    disabled: Boolean,
   },
   computed: {
     displayHelp() {
       return this.helpkey === this.move.id;
+    },
+  },
+  methods: {
+    onAvailableClick () {
+      if(this.disabled) {
+        this.addMessage('info', '你还没有足够的行动点哦');
+      } else {
+        this.onClick();
+      }
     },
   },
 };
@@ -113,5 +124,9 @@ span.iconfont.icon-help-filling {
 }
 .movement-image-list img + img {
   margin-left: 3px;
+}
+div.card.movement-card.movement-disabled,
+div.card.movement-card.movement-disabled:hover {
+  background-color: gray;
 }
 </style>

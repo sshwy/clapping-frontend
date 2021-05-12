@@ -61,8 +61,9 @@
             <transition name="fade-top">
               <div v-if="type === 'req_move'" class="clear-fix moves">
                 <move-card
-                  v-for="move in moveList"
+                  v-for="move in move_list"
                   :key="move.id"
+                  :disabled="!available_move_id_list.includes(move.id)"
                   :move="move"
                   :onClick="() => onSelectMove(move.id)"
                   :helpkey="movement_help_key"
@@ -94,7 +95,7 @@ import MovementLog from "../MovementLog";
 import UserCardInGame from "../UserCardInGame";
 import LogBoard from "../LogBoard";
 import Talk from "../Talk.vue";
-import { PlayerStatus, suggestMovement, needTarget } from "../../utils";
+import { PlayerStatus, suggestMovementId, needTarget, getAllMovement } from "../../utils";
 
 export default {
   components: {
@@ -119,7 +120,8 @@ export default {
       game_id: 0,
       message: "",
       room_status: {},
-      moveList: [],
+      available_move_id_list: [],
+      move_list: [],
       selected_move: "",
       targetList: [],
       submitted_movement: {},
@@ -143,6 +145,7 @@ export default {
       this.type = "room_info";
       this.ingame = false;
       this.game_id = room.game_id;
+      this.move_list = getAllMovement(this.game_id);
     });
     socket.on("room info ingame", (room) => {
       this.room_info_ingame = room;
@@ -150,6 +153,7 @@ export default {
       this.point = room.players.find((e) => e.id === socket.userID)?.point;
       this.ingame = true;
       this.game_id = room.game_id;
+      this.move_list = getAllMovement(this.game_id);
     });
     const onRoomList = () => {
       this.type = "empty";
@@ -177,7 +181,8 @@ export default {
       this.room_status = status;
       this.turn = status.turn;
       this.point = status.self.movePoint;
-      this.moveList = suggestMovement(status.self.movePoint, this.game_id);
+      this.available_move_id_list = suggestMovementId(status.self.movePoint, this.game_id);
+
       this.type = "req_move";
 
       this.remain_time = Math.floor((timeout - new Date().getTime()) / 1000);

@@ -39,11 +39,16 @@ const player_stat_info = {
   },
 };
 
-function suggestMovement (move_point, game_id) {
+function getAllMovement (game_id) {
+  return [...store.get('games')[game_id].movement_group.movement_list]
+    .sort((a, b) => a.point - b.point);
+}
+function suggestMovementId (move_point, game_id) {
   const MoveData = store.get('games')[game_id].movement_group.movement_list;
   let result = MoveData
     .filter(e => e.point <= move_point)
-    .sort((a, b) => a.point - b.point);
+    .sort((a, b) => a.point - b.point)
+    .map(e => e.id);
   return result;
 }
 
@@ -78,7 +83,8 @@ function debounce (f, delay_time = 2000) {
 export {
   player_stat_info,
   PlayerStatus,
-  suggestMovement,
+  suggestMovementId,
+  getAllMovement,
   needTarget,
   debounce,
 }

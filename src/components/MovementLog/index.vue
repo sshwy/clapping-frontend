@@ -95,12 +95,6 @@ export default {
       ];
     },
   },
-  created() {
-    console.log(this.move, this.gameid, this.description);
-  },
-  updated() {
-    console.log(this.gameid);
-  },
 };
 </script>
 
