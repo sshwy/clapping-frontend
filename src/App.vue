@@ -236,7 +236,8 @@ input[type="text"] {
   font-size: 1.5em;
 }
 .main-container {
-  margin-top: 80px;
   padding: 0 20px;
+  max-width: 1000px;
+  margin: 80px auto 0;
 }
 </style>

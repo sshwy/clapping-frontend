@@ -37,7 +37,8 @@
                 :selectable="
                   on_select_target &&
                   u.id !== room_status?.self?.id &&
-                  u.stat !== dead
+                  ((type === 'req_target' && u.stat !== dead) ||
+                    (type === 'req_dead_target' && u.stat === dead))
                 "
                 :onClick="() => onSelectMovement(selected_move, u.id)"
               />
@@ -99,6 +100,7 @@ import {
   PlayerStatus,
   suggestMovementId,
   needTarget,
+  needDeadTarget,
   getAllMovement,
 } from "../../utils";
 
@@ -214,6 +216,11 @@ export default {
         this.selected_move = move;
         this.on_select_target = true;
         this.type = "req_target";
+      } else if (needDeadTarget(move, this.game_id)) {
+        console.log("selectTarget");
+        this.selected_move = move;
+        this.on_select_target = true;
+        this.type = "req_dead_target";
       } else {
         this.onSelectMovement(move, "");
       }

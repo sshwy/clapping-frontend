@@ -3,7 +3,9 @@
     <div class="usertitle">
       您以 「<span class="username">{{ username }}</span
       >」 的身份登录
-      <span v-on:click="onLogout" class="btn"><span class="iconfont icon-sign-out"></span> 注销</span>
+      <span v-on:click="onLogout" class="btn"
+        ><span class="iconfont icon-sign-out"></span> 注销</span
+      >
     </div>
   </div>
 </template>
@@ -36,6 +38,7 @@ export default {
   border-bottom: 1px solid black;
   top: 0;
   padding-left: 20px;
+  z-index: 20;
 }
 .usertitle {
   line-height: 60px;

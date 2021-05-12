@@ -56,6 +56,10 @@ function needTarget (move_id, game_id) {
   const MoveData = store.get('games')[game_id].movement_group.movement_list;
   return Boolean(MoveData[move_id].need_target);
 }
+function needDeadTarget (move_id, game_id) {
+  const MoveData = store.get('games')[game_id].movement_group.movement_list;
+  return Boolean(MoveData[move_id].need_dead_target);
+}
 
 function debounce (f, delay_time = 2000) {
   var is_ok = true;
@@ -86,5 +90,6 @@ export {
   suggestMovementId,
   getAllMovement,
   needTarget,
+  needDeadTarget,
   debounce,
 }
