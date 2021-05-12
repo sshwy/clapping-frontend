@@ -2,7 +2,13 @@
   <div class="roomer clear-fix">
     <transition name="fade">
       <div v-if="type === 'room_list'" class="room-list-container">
-        <h3>房间列表</h3>
+        <h3
+          :style="{
+            marginBottom: '1em',
+          }"
+        >
+          房间列表
+        </h3>
         <span class="btn" v-on:click="onUpdateRoomList">
           <span class="iconfont icon-refresh"></span>
           刷新
@@ -73,7 +79,13 @@ export default {
 </script>
 
 <style>
+.room-list-container {
+  position: absolute;
+}
 .room-list {
   margin-top: 1em;
+}
+.roomer {
+  position: relative;
 }
 </style>

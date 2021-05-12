@@ -38,18 +38,18 @@ export default {
   props: {
     sessioned: Boolean,
   },
-  data () {
+  data() {
     return {
       username: "",
-    }
+    };
   },
   methods: {
     onUsernameSelection() {
       socket.auth = { username: this.username };
       socket.connect();
     },
-  }
-}
+  },
+};
 </script>
 
 <style>
@@ -62,7 +62,5 @@ export default {
 .fade-leave-to {
   opacity: 0;
   position: absolute;
-  top: 60px;
 }
-
 </style>
