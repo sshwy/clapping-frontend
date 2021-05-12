@@ -75,7 +75,7 @@
           <div v-if="type === 'submitted' && room_status?.self?.name">
             <movement-log
               :description="submitted_movement"
-              :selfname="room_status.self.name"
+              :selfid="room_status.self.id"
               :gameid="game_id"
             />
           </div>
@@ -95,7 +95,12 @@ import MovementLog from "../MovementLog";
 import UserCardInGame from "../UserCardInGame";
 import LogBoard from "../LogBoard";
 import Talk from "../Talk.vue";
-import { PlayerStatus, suggestMovementId, needTarget, getAllMovement } from "../../utils";
+import {
+  PlayerStatus,
+  suggestMovementId,
+  needTarget,
+  getAllMovement,
+} from "../../utils";
 
 export default {
   components: {
@@ -181,7 +186,10 @@ export default {
       this.room_status = status;
       this.turn = status.turn;
       this.point = status.self.movePoint;
-      this.available_move_id_list = suggestMovementId(status.self.movePoint, this.game_id);
+      this.available_move_id_list = suggestMovementId(
+        status.self.movePoint,
+        this.game_id
+      );
 
       this.type = "req_move";
 
@@ -224,6 +232,11 @@ export default {
         this.movement_help_key = key;
       }
     },
+  },
+  provide() {
+    return {
+      getPlayerList: () => this.room_info_ingame.players || [],
+    };
   },
 };
 </script>

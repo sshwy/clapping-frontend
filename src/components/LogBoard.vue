@@ -8,7 +8,7 @@
             v-for="item of draw_sentences"
             :key="item.id"
             :description="item"
-            :selfname="selfname"
+            :selfid="selfid"
             :gameid="game_id"
           />
         </transition-group>
@@ -32,7 +32,7 @@ export default {
       type: "empty",
       draw_data: null,
       draw_sentences: [],
-      selfname: "",
+      selfid: "",
       game_id: 0,
     };
   },
@@ -43,8 +43,8 @@ export default {
       socket.on("draw", (data) => {
         this.game_id = data.game_id;
         this.draw_data = data;
-        this.draw_sentences.unshift(...data.logs);
-        this.selfname = socket.username;
+        this.draw_sentences.unshift(...data.log);
+        this.selfid = socket.userID;
 
         this.type = "draw";
 
@@ -64,7 +64,7 @@ export default {
         this.game_id = room.game_id;
       });
       socket.on("room info ingame", (room) => {
-        this.selfname = socket.username;
+        this.selfid = socket.userID;
         this.draw_sentences = room.battle_log;
         this.game_id = room.game_id;
         this.type = "draw";

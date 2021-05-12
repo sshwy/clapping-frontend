@@ -88,4 +88,7 @@ export default {
 .game-config {
   margin: 1em 0;
 }
+input[type="radio"] {
+  outline: none;
+}
 </style>

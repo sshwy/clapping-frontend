@@ -1,6 +1,7 @@
 <template>
   <p v-if="type === 'msg'" class="movement-log text-log">
     <turn-span :turn="turn" />
+    <span v-if="emitter" class="username text-author">{{ emitter }}</span>
     {{ text }}
   </p>
   <p v-else-if="type === 'win'" class="movement-log win-log">
@@ -53,16 +54,15 @@
 import store from "../../dataStore";
 import TurnSpan from "./TurnSpan";
 
-const checkSelf = (origin, self) => (origin === self ? "你" : origin);
-
 export default {
   name: "MovementLog",
+  inject: ["getPlayerList"],
   components: {
     TurnSpan,
   },
   props: {
     description: Object,
-    selfname: String,
+    selfid: String,
     gameid: Number,
   },
   data() {
@@ -73,21 +73,28 @@ export default {
       text: this.description.text,
     };
   },
+  methods: {
+    userTitle(id) {
+      return id === this.selfid
+        ? "你"
+        : this.getPlayerList().find((e) => e.id === id)?.name || id;
+    },
+  },
   computed: {
     emitter() {
-      return checkSelf(this.description.from, this.selfname);
+      return this.userTitle(this.description.from);
     },
     reciver() {
-      return checkSelf(this.description.to, this.selfname);
+      return this.userTitle(this.description.to);
     },
     die() {
-      return checkSelf(this.description.die, this.selfname);
+      return this.userTitle(this.description.die);
     },
     killby() {
-      return this.description.by.map((e) => checkSelf(e, this.selfname));
+      return this.description.by.map(this.userTitle);
     },
     win() {
-      return checkSelf(this.description.win, this.selfname);
+      return this.userTitle(this.description.win);
     },
     move() {
       return store.get("games")[this.gameid].movement_group.movement_list[
