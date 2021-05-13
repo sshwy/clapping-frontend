@@ -105,6 +105,9 @@ export default {
         type: type,
         delay: delay,
       });
+      while (this.messageList.length > 10) {
+        this.messageList.pop();
+      }
       this.$nextTick(function () {
         setTimeout(() => {
           this.messageList = this.messageList.filter((msg) => msg.id !== id);
