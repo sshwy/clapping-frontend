@@ -1,6 +1,9 @@
 import { io } from "socket.io-client";
 
-const URL = "http://192.168.110.228:3000";
+const URL = process.env.VUE_APP_SOCKET_URL;
+
+console.log('url', URL);
+
 const socket = io(URL, { autoConnect: false });
 
 socket.onAny((event, ...args) => {
