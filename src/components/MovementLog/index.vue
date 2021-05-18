@@ -29,7 +29,7 @@
         ><img
           v-for="(src, idx) in move.image_list"
           :key="idx"
-          :src="src"
+          :src="getImageURL(src)"
           :alt="src"
       /></span>
     </span>
