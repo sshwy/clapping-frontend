@@ -43,7 +43,7 @@
         ><img
           v-for="(src, idx) in move.image_list"
           :key="idx"
-          :src="src"
+          :src="getImageURL(src)"
           :alt="src"
       /></span>
     </span>
@@ -78,6 +78,9 @@ export default {
       return id === this.selfid
         ? "你"
         : this.getPlayerList().find((e) => e.id === id)?.name || id;
+    },
+    getImageURL(path) {
+      return process.env.VUE_APP_RSC_URL + path;
     },
   },
   computed: {

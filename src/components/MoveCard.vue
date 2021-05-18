@@ -1,6 +1,10 @@
 <template>
   <div
-    :class="['card movement-card card-with-hover', 'movement-' + move.id, disabled && 'movement-disabled']"
+    :class="[
+      'card movement-card card-with-hover',
+      'movement-' + move.id,
+      disabled && 'movement-disabled',
+    ]"
     v-on:click="onAvailableClick"
   >
     <div class="room-card-title card-title">
@@ -9,7 +13,7 @@
         ><img
           v-for="(src, idx) in move.image_list"
           :key="idx"
-          :src="src"
+          :src="getImageURL(src)"
           :alt="src"
       /></span>
     </div>
@@ -46,7 +50,7 @@
 <script>
 export default {
   name: "MoveCard",
-  inject: ['addMessage'],
+  inject: ["addMessage"],
   props: {
     move: Object,
     helpkey: Number,
@@ -60,12 +64,15 @@ export default {
     },
   },
   methods: {
-    onAvailableClick () {
-      if(this.disabled) {
-        this.addMessage('info', '你还没有足够的行动点哦');
+    onAvailableClick() {
+      if (this.disabled) {
+        this.addMessage("info", "你还没有足够的行动点哦");
       } else {
         this.onClick();
       }
+    },
+    getImageURL(path) {
+      return process.env.VUE_APP_RSC_URL + path;
     },
   },
 };
@@ -120,7 +127,7 @@ span.iconfont.icon-help-filling {
   height: 1.1em;
   vertical-align: -0.15em;
   background-color: white;
-  border-radius: 50% /*3px;*/
+  border-radius: 50%; /*3px;*/
 }
 .movement-image-list img + img {
   margin-left: 3px;
