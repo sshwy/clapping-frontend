@@ -8,4 +8,4 @@ add ["./dist", "."]
 
 RUN npm install vite -g
 
-CMD vite --port 8080
+CMD vite --port 8080 --host 0.0.0.0

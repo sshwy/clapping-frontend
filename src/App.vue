@@ -75,7 +75,7 @@ export default {
       if (err.message === "invalid username") {
         this.addMessage("info", "你输入的用户名不太对劲哦");
         this.onClearCache();
-        // location.reload();
+        location.reload();
       } else if (err.message === "xhr poll error") {
         this.onClearCache();
         location.reload();
