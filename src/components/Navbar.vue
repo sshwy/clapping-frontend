@@ -1,5 +1,8 @@
 <template>
-  <div class="navbar">
+  <div class="navbar clear-fix">
+    <div class="logo-container">
+      <img src="/logo.png" alt="Clapping" class="logo" />
+    </div>
     <div class="usertitle">
       您以 「<span class="username">{{ username }}</span
       >」 的身份登录
@@ -42,5 +45,14 @@ export default {
 }
 .usertitle {
   line-height: 60px;
+  float: left;
+}
+.logo {
+  height: 60px;
+}
+.logo-container {
+  float: left;
+  margin-right: 10px;
+  user-select: none;
 }
 </style>
