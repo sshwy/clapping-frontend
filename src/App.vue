@@ -232,5 +232,7 @@ input[type="text"] {
   padding: 0 20px;
   max-width: 1000px;
   margin: 80px auto 0;
+  max-height: calc(100vh - 80px);
+  overflow-y: hidden;
 }
 </style>

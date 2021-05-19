@@ -79,9 +79,6 @@ export default {
 </script>
 
 <style>
-.room-list-container {
-  position: absolute;
-}
 .room-list {
   margin-top: 1em;
 }

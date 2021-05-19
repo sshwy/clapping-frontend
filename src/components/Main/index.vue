@@ -51,12 +51,25 @@
             />
           </grid-col>
         </grid-row>
-        <grid-row :height="0.45">
+        <grid-row
+          :height="0.45"
+          :style="{
+            position: 'relative',
+          }"
+        >
           <talk />
           <div v-if="type === 'terminate'" v-html="message"></div>
+          <div v-if="type === 'submitted' && room_status?.self?.name">
+            <movement-log
+              :description="submitted_movement"
+              :selfid="room_status.self.id"
+              :gameid="game_id"
+            />
+          </div>
           <div
             :style="{
-              position: 'relative',
+              height: 'calc(100% - 37px)',
+              marginTop: '5px',
             }"
           >
             <transition name="fade-top">
@@ -72,13 +85,6 @@
                 />
               </div>
             </transition>
-          </div>
-          <div v-if="type === 'submitted' && room_status?.self?.name">
-            <movement-log
-              :description="submitted_movement"
-              :selfid="room_status.self.id"
-              :gameid="game_id"
-            />
           </div>
         </grid-row>
       </grid-layout>
@@ -254,7 +260,8 @@ export default {
   padding-bottom: 1em;
 }
 .moves {
-  overflow: hidden;
+  overflow-y: auto;
+  height: 100%;
   transition: all 0.5s ease;
 }
 
