@@ -4,10 +4,12 @@
       v-if="!sessioned"
       class="full-page"
       :style="{
-        display: 'table',
         position: 'absolute',
       }"
     >
+      <div class="logo-title">
+        <img src="/logo-title.png" alt="" />
+      </div>
       <div class="user-register">
         <form onsubmit="return false">
           <input v-model="username" type="text" placeholder="取个名字吧 ^_^" />
@@ -62,5 +64,24 @@ export default {
 .fade-leave-to {
   opacity: 0;
   position: absolute;
+}
+.user-register {
+  width: 430px;
+  font-size: 1.5em;
+  margin: 0 auto;
+  padding-left: 20px;
+}
+.full-page {
+  width: 100vw;
+  height: 100vh;
+}
+.logo-title {
+  margin: 0 auto;
+  width: 450px;
+  height: 400px;
+}
+.logo-title img {
+  height: inherit;
+  margin: 0 auto;
 }
 </style>

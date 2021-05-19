@@ -78,7 +78,7 @@ export default {
         location.reload();
       } else if (err.message === "xhr poll error") {
         this.onClearCache();
-        location.reload();
+        this.addMessage("error", "似乎连不上服务器了……请刷新重试");
       }
     });
     socket.on("finish logout", () => {
@@ -227,16 +227,6 @@ input[type="text"] {
   margin: 0 3px;
   font-size: 1em;
   padding: 0.2em 0.3em;
-}
-.full-page {
-  width: 100vw;
-  height: 100vh;
-}
-.user-register {
-  display: table-cell;
-  vertical-align: middle;
-  padding: 0 7em;
-  font-size: 1.5em;
 }
 .main-container {
   padding: 0 20px;
