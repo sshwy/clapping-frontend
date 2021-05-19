@@ -29,6 +29,9 @@
           ></span>
         </form>
       </div>
+      <div class="home-footer">
+        <span class="version" title="Version of Front-end">{{ version }}</span>
+      </div>
     </div>
   </transition>
 </template>
@@ -49,6 +52,11 @@ export default {
     onUsernameSelection() {
       socket.auth = { username: this.username };
       socket.connect();
+    },
+  },
+  computed: {
+    version() {
+      return process.env.VUE_APP_GIT_DESCRIPTION.toString();
     },
   },
 };
@@ -83,5 +91,22 @@ export default {
 .logo-title img {
   height: inherit;
   margin: 0 auto;
+}
+.home-footer {
+  position: fixed;
+  bottom: 0;
+  padding: 0 10px 10px 10px;
+}
+.version {
+  color: #9f9f9f;
+  transition: 0.3s all ease;
+  cursor: default;
+}
+.version::before {
+  content: "v";
+  display: inline;
+}
+.version:hover {
+  color: black;
 }
 </style>
