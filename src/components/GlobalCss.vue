@@ -75,8 +75,4 @@ h5,
 h6 {
   margin: 0;
 }
-
-img[src$="break.svg"] {
-  display: none;
-}
 </style>

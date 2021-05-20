@@ -31,7 +31,7 @@
           :key="idx"
           :src="getImageURL(src)"
           :alt="src"
-          onerror="this.src='break.svg';"
+          onerror="this.src='/favicon.png';"
       /></span>
     </span>
   </p>
@@ -46,7 +46,7 @@
           :key="idx"
           :src="getImageURL(src)"
           :alt="src"
-          onerror="this.src='break.svg';"
+          onerror="this.src='/favicon.png';"
       /></span>
     </span>
   </p>
