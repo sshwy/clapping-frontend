@@ -3,7 +3,6 @@ import { clearCache } from "../utils";
 /** @type {import("../../global").AppActions} */
 const socketActions = {
   session (context, payload) {
-    console.log('socket_session', payload);
     context.commit('setstate', {
       userID: payload.userID,
       username: payload.username,
@@ -18,7 +17,6 @@ const socketActions = {
     });
   },
   display_message (context, payload) {
-    console.log('display_message', payload);
     context.dispatch("message", payload);
   },
   finish_logout () {
@@ -44,7 +42,18 @@ const socketActions = {
       clearCache();
     }
   },
-  room_list_update (context) {
+  room_list (context, payload) {
+    context.dispatch('socket_room_list_update', payload);
+  },
+  room_list_update (context, payload) {
+    context.commit('setstate', {
+      data: {
+        room_list: payload.map((room) => ({
+          ...room,
+          vid: room.id + new Date().getTime(),
+        }))
+      },
+    });
     context.dispatch('message', {
       type: 'success',
       text: "成功刷新房间列表",
@@ -52,7 +61,6 @@ const socketActions = {
     });
   },
   room_info_ingame (context, payload) {
-    console.log('room_info_ingame', payload.game_id);
     context.commit('setstate', {
       data: {
         game_id: payload.game_id,
@@ -60,7 +68,6 @@ const socketActions = {
     });
   },
   room_info (context, payload) {
-    console.log('room_info', payload.game_id);
     context.commit('setstate', {
       data: {
         game_id: payload.game_id,
@@ -68,7 +75,6 @@ const socketActions = {
     });
   },
   scene_type (context, payload) {
-    // console.log('scene_type', payload);
     context.commit('setstate', {
       scene_type: payload,
     });

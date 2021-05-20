@@ -15,7 +15,7 @@
         </vbtn>
         <div class="room-list clear-fix">
           <room-card
-            v-for="room in roomList"
+            v-for="room in this.$store.state.data.room_list || []"
             :key="room.vid"
             :room="room"
             :onClick="() => onSelectRoom(room.id)"
@@ -36,26 +36,6 @@ export default {
   components: {
     RoomCard,
     vbtn: Button,
-  },
-  data() {
-    return {
-      innerHTML: "",
-      roomList: [],
-      roomInfo: null,
-    };
-  },
-  created() {
-    socket.on("room_info", (room) => {
-      this.roomInfo = room;
-    });
-    const onRoomList = (rooms) => {
-      this.roomList = rooms.map((room) => ({
-        ...room,
-        vid: room.id + new Date().getTime(),
-      }));
-    };
-    socket.on("room_list", onRoomList);
-    socket.on("room_list_update", onRoomList);
   },
   methods: {
     onSelectRoom(id) {

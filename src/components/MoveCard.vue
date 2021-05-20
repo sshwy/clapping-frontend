@@ -51,7 +51,6 @@
 <script>
 export default {
   name: "MoveCard",
-  inject: ["addMessage"],
   props: {
     move: Object,
     helpkey: Number,
@@ -67,7 +66,11 @@ export default {
   methods: {
     onAvailableClick() {
       if (this.disabled) {
-        this.addMessage("info", "你还没有足够的行动点哦");
+        this.$store.dispatch("message", {
+          type: "info",
+          text: "你还没有足够的行动点哦",
+          delay: 3000,
+        });
       } else {
         this.onClick();
       }

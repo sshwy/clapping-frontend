@@ -8,9 +8,11 @@ console.log('url', URL);
 
 const socket = io(URL, { autoConnect: false });
 
-socket.onAny((event, ...args) => {
-  console.log('[event]', event, args);
-});
+if (process.env.NODE_ENV === 'development') {
+  socket.onAny((event, ...args) => {
+    console.log('[event]', event, args);
+  });
+}
 
 socket.on("session", ({ sessionID, userID, username }) => {
   socket.auth = { sessionID }; // attach the session ID to the next reconnection attempts

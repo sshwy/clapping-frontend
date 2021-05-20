@@ -32,7 +32,6 @@ export default {
   },
   props: {
     room: Object,
-    selfid: String,
     selfstat: String,
   },
   methods: {
@@ -48,7 +47,7 @@ export default {
   },
   computed: {
     isLeader() {
-      return this.selfid === this.room.leader;
+      return this.$store.state.userID === this.room.leader;
     },
   },
 };

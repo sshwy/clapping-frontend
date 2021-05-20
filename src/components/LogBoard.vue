@@ -1,7 +1,7 @@
 <template>
-  <div class="scene-wrapper">
-    <div class="scene-title">对战日志</div>
-    <div class="scene">
+  <div class="log-board-wrapper">
+    <div class="log-board-title">对战日志</div>
+    <div class="log-board">
       <div>
         <transition-group name="movement-log-list" tag="div">
           <movement-log
@@ -54,25 +54,25 @@ export default {
 </script>
 
 <style>
-.scene {
+.log-board {
   overflow-y: auto;
   height: inherit;
   padding: 5px;
   box-shadow: 0px 1px 2px 0px #b1b1b1;
   margin-bottom: 3px;
 }
-.scene-wrapper {
+.log-board-wrapper {
   position: relative;
   height: inherit;
 }
-.scene-title {
+.log-board-title {
   position: absolute;
   top: 8px;
   right: 20px;
   color: #b1b1b1;
   transition: all 0.3s ease;
 }
-.scene-title:hover {
+.log-board-title:hover {
   cursor: default;
   color: black;
 }

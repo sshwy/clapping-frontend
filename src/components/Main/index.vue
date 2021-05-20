@@ -42,7 +42,6 @@
             <room-info
               v-if="this.$store.getters.is_room_info"
               :room="room"
-              :selfid="this.$store.state.userID"
               :selfstat="selfstat"
             />
           </grid-col>

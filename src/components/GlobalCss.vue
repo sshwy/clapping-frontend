@@ -90,4 +90,13 @@ input[type="text"] {
 input[type="text"]:hover {
   background: #efefef;
 }
+input::placeholder {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    "Microsoft YaHei", "WenQuanYi Micro Hei", "Microsoft YaHei UI", sans-serif;
+  font-size: 90%;
+}
+input[disabled] {
+  background-color: rgb(206, 206, 206);
+}
 </style>

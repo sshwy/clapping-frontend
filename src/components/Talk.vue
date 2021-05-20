@@ -1,5 +1,8 @@
 <template>
-  <div v-if="type !== 'empty'" class="talk-container">
+  <div
+    v-if="this.$store.getters.is_gaming || this.$store.getters.is_room_info"
+    class="talk-container"
+  >
     <div class="talk-input">
       <form onsubmit="return false">
         <span class="iconfont icon-comment talk-label"></span>
@@ -74,30 +77,17 @@ import socket from "../socket";
 
 export default {
   name: "Talk",
-  inject: ["addMessage"],
   data() {
     const expressionList = (localStorage.getItem("quick-exp") || "")
       .split("<spliter>")
       .filter((e) => e);
     return {
       text: "",
-      type: "empty",
       disable: false,
       expressionList: expressionList,
       minInputWidth: expressionList.reduce((a, b) => Math.max(a, b.length), 20),
       display_exp: false,
     };
-  },
-  created() {
-    socket.on("room_list", () => {
-      this.type = "empty";
-    });
-    socket.on("room_info", () => {
-      this.type = "display";
-    });
-    socket.on("room_info_ingame", () => {
-      this.type = "display";
-    });
   },
   methods: {
     focusInput() {
@@ -118,7 +108,11 @@ export default {
     },
     onTalk() {
       if (this.text.length > 50) {
-        this.addMessage("error", "别看今天拉清单，小心将来闹得欢");
+        this.$store.dispatch("message", {
+          type: "error",
+          text: "别看今天拉清单，小心将来闹得欢",
+          delay: 3000,
+        });
       } else {
         socket.emit("talk", this.text);
         this.text = "";
@@ -145,7 +139,11 @@ export default {
           this.expressionList.join("<spliter>")
         );
       } catch (e) {
-        this.addMessage("info", e.message);
+        this.$store.dispatch("message", {
+          type: "info",
+          text: e.message,
+          delay: 3000,
+        });
       }
       this.focusInput();
       this.minInputWidth = this.expressionList.reduce(
@@ -156,7 +154,11 @@ export default {
     onRemoveExp(s) {
       this.expressionList = this.expressionList.filter((e) => e !== s);
       localStorage.setItem("quick-exp", this.expressionList.join("<spliter>"));
-      this.addMessage("success", "删除成功");
+      this.$store.dispatch("message", {
+        type: "success",
+        text: "删除成功",
+        delay: 3000,
+      });
       this.focusInput();
       this.minInputWidth = this.expressionList.reduce(
         (a, b) => Math.max(a, b.length),
@@ -191,15 +193,6 @@ export default {
 .talk-label {
   font-size: 1.7em;
   vertical-align: -0.3em;
-}
-input::placeholder {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    "Microsoft YaHei", "WenQuanYi Micro Hei", "Microsoft YaHei UI", sans-serif;
-  font-size: 90%;
-}
-input[disabled] {
-  background-color: rgb(206, 206, 206);
 }
 .word-counter {
   user-select: none;

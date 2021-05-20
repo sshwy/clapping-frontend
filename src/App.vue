@@ -61,20 +61,6 @@ export default {
       });
     }
   },
-  methods: {
-    addMessage(type, text, delay = 3000) {
-      this.$store.dispatch("message", {
-        type,
-        text,
-        delay,
-      });
-    },
-  },
-  provide() {
-    return {
-      addMessage: this.addMessage,
-    };
-  },
 };
 </script>
 

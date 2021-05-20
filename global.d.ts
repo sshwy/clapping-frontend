@@ -10,7 +10,7 @@ interface AppState {
   backend_version: string; // 后端版本
   games: Game[]; // 游戏数组
   scene_type: "unauthorized" | "room_list" | "room_info" | "gaming"; // 场景
-  data: GamingData | {}; // 不同的 scene_type 对应不同的 data
+  data: GamingData | RoomListData | {}; // 不同的 scene_type 对应不同的 data
   messages: Message[]; // 左下角提示信息列表
 }
 
@@ -22,6 +22,10 @@ interface Message {
 
 interface GamingData {
   game_id: number;
+}
+
+interface RoomListData {
+  room_list: any[];
 }
 
 type SocketMutations = {
