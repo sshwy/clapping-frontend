@@ -75,4 +75,19 @@ h5,
 h6 {
   margin: 0;
 }
+
+input[type="text"] {
+  border: none;
+  border-bottom: 2px solid black;
+  outline: none;
+  margin: 0 3px;
+  font-size: 1em;
+  padding: 0.2em 0.3em;
+  border-radius: 2px;
+  transition: 0.3s all ease;
+}
+
+input[type="text"]:hover {
+  background: #efefef;
+}
 </style>

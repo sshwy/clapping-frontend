@@ -175,14 +175,6 @@ body {
   background-color: #cfcfcf;
 }
 
-input[type="text"] {
-  border: none;
-  border-bottom: 2px solid black;
-  outline: none;
-  margin: 0 3px;
-  font-size: 1em;
-  padding: 0.2em 0.3em;
-}
 .main-container {
   padding: 0 20px;
   max-width: 1000px;

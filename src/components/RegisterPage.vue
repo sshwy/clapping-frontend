@@ -127,4 +127,17 @@ export default {
 .version:hover {
   color: black;
 }
+
+.user-register input[type="text"] {
+  font-size: 0.9em;
+  padding: 0.5em 0.4em 0.3em;
+}
+
+.username-submit-btn {
+  transition: color 0.3s ease;
+}
+
+.username-submit-btn:hover {
+  color: #bdbdbd;
+}
 </style>
