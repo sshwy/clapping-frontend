@@ -19,14 +19,16 @@
             :style="{ display: 'none' }"
             v-on:click="onUsernameSelection"
           />
-          <span
-            class="iconfont icon-arrow-right-circle username-submit-btn"
+          <vbtn
+            class="iconfont icon-arrow-right-circle"
             :style="{
               fontSize: '1.8em',
               verticalAlign: '-0.2em',
             }"
+            title="点击以登录"
+            :bordered="false"
             v-on:click="onUsernameSelection"
-          ></span>
+          ></vbtn>
         </form>
       </div>
       <div class="home-footer">
@@ -49,8 +51,12 @@
 
 <script>
 import socket from "../socket";
+import Button from "./Button";
 
 export default {
+  components: {
+    vbtn: Button,
+  },
   data() {
     return {
       username: "",
@@ -60,6 +66,9 @@ export default {
     onUsernameSelection() {
       socket.auth = { username: this.username };
       socket.connect();
+    },
+    onTest() {
+      console.log("test");
     },
   },
   computed: {
@@ -71,7 +80,6 @@ export default {
     fetch(process.env.VUE_APP_SOCKET_URL + "/info.json")
       .then((data) => data.json())
       .then((data) => {
-        console.log(data);
         this.$store.commit("setstate", {
           backend_version: data.version.raw,
         });
@@ -131,13 +139,5 @@ export default {
 .user-register input[type="text"] {
   font-size: 0.9em;
   padding: 0.5em 0.4em 0.3em;
-}
-
-.username-submit-btn {
-  transition: color 0.3s ease;
-}
-
-.username-submit-btn:hover {
-  color: #bdbdbd;
 }
 </style>

@@ -6,18 +6,23 @@
     <div class="usertitle">
       您以 「<span class="username">{{ $store.state.username }}</span
       >」 的身份登录
-      <span v-on:click="onLogout" class="btn"
-        ><span class="iconfont icon-sign-out"></span> 注销</span
-      >
+
+      <vbtn v-on:click="onLogout">
+        <span class="iconfont icon-sign-out"></span> 注销
+      </vbtn>
+      <span class="btn"></span>
     </div>
   </div>
 </template>
 
 <script>
 import socket from "../socket";
+import Button from "./Button";
 
 export default {
-  name: "Navbar",
+  components: {
+    vbtn: Button,
+  },
   methods: {
     onLogout() {
       socket.emit("logout");

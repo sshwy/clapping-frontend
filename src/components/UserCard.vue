@@ -144,6 +144,15 @@ export default {
   font-size: 90%;
 }
 
+.tag.btn {
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.tag.btn:hover {
+  background-color: #cfcfcf;
+}
+
 .leader-tag {
   background-color: #03a9f4;
   color: white;

@@ -159,22 +159,6 @@ body {
   clear: both;
 }
 
-.btn {
-  margin: 0 3px;
-  background-color: white;
-  border: 1px solid black;
-  border-radius: 3px;
-  padding: 4px 6px 2px;
-  font-size: 1em;
-  transition: all 0.3s ease;
-  user-select: none;
-}
-
-.btn:hover {
-  cursor: pointer;
-  background-color: #cfcfcf;
-}
-
 .main-container {
   padding: 0 20px;
   max-width: 1000px;
