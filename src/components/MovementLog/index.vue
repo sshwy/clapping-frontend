@@ -31,6 +31,7 @@
           :key="idx"
           :src="getImageURL(src)"
           :alt="src"
+          onerror="this.src='break.svg';"
       /></span>
     </span>
   </p>
@@ -45,13 +46,13 @@
           :key="idx"
           :src="getImageURL(src)"
           :alt="src"
+          onerror="this.src='break.svg';"
       /></span>
     </span>
   </p>
 </template>
 
 <script>
-import store from "../../dataStore";
 import TurnSpan from "./TurnSpan";
 
 export default {
@@ -62,8 +63,6 @@ export default {
   },
   props: {
     description: Object,
-    selfid: String,
-    gameid: Number,
   },
   data() {
     return {
@@ -75,7 +74,7 @@ export default {
   },
   methods: {
     userTitle(id) {
-      return id === this.selfid
+      return id === this.$store.state.userID
         ? "你"
         : this.getPlayerList().find((e) => e.id === id)?.name || id;
     },
@@ -100,9 +99,7 @@ export default {
       return this.userTitle(this.description.win);
     },
     move() {
-      return store.get("games")[this.gameid].movement_group.movement_list[
-        this.description.move
-      ];
+      return this.$store.getters.all_movement[this.description.move];
     },
   },
 };

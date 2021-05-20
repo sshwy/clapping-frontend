@@ -20,7 +20,9 @@
       v-on:click="() => onHurry(user.id)"
       >催他准备</span
     >
-    <span v-if="editable && !isReady && hurry_times" class="hurry-times">✕{{ hurry_times }}</span>
+    <span v-if="editable && !isReady && hurry_times" class="hurry-times"
+      >✕{{ hurry_times }}</span
+    >
     <transition name="shake">
       <span v-if="says" class="say">
         <span class="iconfont icon-comment"></span>
@@ -72,7 +74,7 @@ export default {
     onHurry(id) {
       clearTimeout(this.hurry_timeout);
       socket.emit("hurry player", id);
-      this.hurry_times ++;
+      this.hurry_times++;
       this.hurry_timeout = setTimeout(() => {
         this.hurry_times = 0;
       }, 5000);

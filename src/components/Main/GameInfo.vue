@@ -24,14 +24,12 @@
 </template>
 
 <script>
-import store from "../../dataStore";
 import socket from "../../socket";
 
 export default {
   name: "GameInfo",
   props: {
     room: Object,
-    selfid: String,
   },
   data() {
     return {
@@ -40,10 +38,10 @@ export default {
   },
   computed: {
     isLeader() {
-      return this.selfid === this.room.leader;
+      return this.$store.state.userID === this.room.leader;
     },
     gameMetaList() {
-      return store.get("games").map((e, idx) => ({
+      return this.$store.state.games.map((e, idx) => ({
         id: idx,
         name: e.name,
         description: e.description,

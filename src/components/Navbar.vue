@@ -4,7 +4,7 @@
       <img src="/logo.png" alt="Clapping" class="logo" />
     </div>
     <div class="usertitle">
-      您以 「<span class="username">{{ username }}</span
+      您以 「<span class="username">{{ $store.state.username }}</span
       >」 的身份登录
       <span v-on:click="onLogout" class="btn"
         ><span class="iconfont icon-sign-out"></span> 注销</span
@@ -18,9 +18,6 @@ import socket from "../socket";
 
 export default {
   name: "Navbar",
-  props: {
-    username: String,
-  },
   methods: {
     onLogout() {
       socket.emit("logout");

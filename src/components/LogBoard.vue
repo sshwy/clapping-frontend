@@ -2,14 +2,12 @@
   <div class="scene-wrapper">
     <div class="scene-title">对战日志</div>
     <div class="scene">
-      <div v-show="type === 'draw'">
+      <div>
         <transition-group name="movement-log-list" tag="div">
           <movement-log
             v-for="item of draw_sentences"
             :key="item.id"
             :description="item"
-            :selfid="selfid"
-            :gameid="game_id"
           />
         </transition-group>
       </div>
@@ -19,7 +17,6 @@
 
 <script>
 import socket from "../socket";
-import store from "../dataStore";
 import MovementLog from "./MovementLog";
 
 export default {
@@ -29,47 +26,29 @@ export default {
   },
   data() {
     return {
-      type: "empty",
       draw_data: null,
       draw_sentences: [],
-      selfid: "",
-      game_id: 0,
     };
   },
   created() {
-    if (!store.get("scene_socket")) {
-      store.set("scene_socket", true);
-      console.log("scene socket");
-      socket.on("draw", (data) => {
-        this.game_id = data.game_id;
-        this.draw_data = data;
-        this.draw_sentences.unshift(...data.log);
-        this.selfid = socket.userID;
+    socket.on("draw", (data) => {
+      this.draw_data = data;
+      this.draw_sentences.unshift(...data.log);
 
-        this.type = "draw";
-
-        this.$nextTick(function () {
-          if (data.event_name === "watcher draw") {
-            socket.emit("watcher finish draw");
-          } else {
-            socket.emit("finish draw", this.selfname);
-          }
-        });
+      this.$nextTick(function () {
+        if (data.event_name === "watcher draw") {
+          socket.emit("watcher finish draw");
+        } else {
+          socket.emit("finish draw", this.selfname);
+        }
       });
-      socket.on("game prepare", () => {
-        this.draw_sentences = [];
-        this.type = "empty";
-      });
-      socket.on("room info ingame", (room) => {
-        this.game_id = room.game_id;
-      });
-      socket.on("room info ingame", (room) => {
-        this.selfid = socket.userID;
-        this.draw_sentences = room.battle_log;
-        this.game_id = room.game_id;
-        this.type = "draw";
-      });
-    }
+    });
+    socket.on("game prepare", () => {
+      this.draw_sentences = [];
+    });
+    socket.on("room_info_ingame", (room) => {
+      this.draw_sentences = room.battle_log;
+    });
   },
 };
 </script>

@@ -1,5 +1,5 @@
 /* eslint-disable no-fallthrough */
-import store from './dataStore';
+import store from './store';
 
 const PlayerStatus = {
   INITIALIZED: 0,
@@ -39,26 +39,19 @@ const player_stat_info = {
   },
 };
 
-function getAllMovement (game_id) {
-  return [...store.get('games')[game_id].movement_group.movement_list]
-    .sort((a, b) => a.point - b.point);
-}
-function suggestMovementId (move_point, game_id) {
-  const MoveData = store.get('games')[game_id].movement_group.movement_list;
-  let result = MoveData
+function suggestMovementId (move_point) {
+  let result = store.getters.all_movement
     .filter(e => e.point <= move_point)
     .sort((a, b) => a.point - b.point)
     .map(e => e.id);
   return result;
 }
 
-function needTarget (move_id, game_id) {
-  const MoveData = store.get('games')[game_id].movement_group.movement_list;
-  return Boolean(MoveData[move_id].need_target);
+function needTarget (move_id) {
+  return Boolean(store.getters.all_movement[move_id].need_target);
 }
-function needDeadTarget (move_id, game_id) {
-  const MoveData = store.get('games')[game_id].movement_group.movement_list;
-  return Boolean(MoveData[move_id].need_dead_target);
+function needDeadTarget (move_id) {
+  return Boolean(store.getters.all_movement[move_id].need_dead_target);
 }
 
 function debounce (f, delay_time = 2000) {
@@ -84,12 +77,17 @@ function debounce (f, delay_time = 2000) {
   }
 }
 
+function clearCache () {
+  console.log("clear cache.");
+  localStorage.removeItem("sessionID");
+}
+
 export {
   player_stat_info,
   PlayerStatus,
   suggestMovementId,
-  getAllMovement,
   needTarget,
   needDeadTarget,
   debounce,
+  clearCache,
 }

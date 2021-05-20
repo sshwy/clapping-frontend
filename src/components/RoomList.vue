@@ -1,7 +1,7 @@
 <template>
   <div class="roomer clear-fix">
     <transition name="fade">
-      <div v-if="type === 'room_list'" class="room-list-container">
+      <div v-if="this.$store.getters.is_room_list" class="room-list-container">
         <h3
           :style="{
             marginBottom: '1em',
@@ -38,33 +38,22 @@ export default {
   data() {
     return {
       innerHTML: "",
-      type: "empty",
       roomList: [],
       roomInfo: null,
-      selfid: "",
     };
   },
   created() {
-    socket.on("session", ({ userID }) => {
-      this.selfid = userID; // save the ID of the user
-    });
-    socket.on("room info", (room) => {
+    socket.on("room_info", (room) => {
       this.roomInfo = room;
-      this.type = "room_info";
     });
     const onRoomList = (rooms) => {
       this.roomList = rooms.map((room) => ({
         ...room,
         vid: room.id + new Date().getTime(),
       }));
-      this.type = "room_list";
     };
-    socket.on("room list", onRoomList);
-    socket.on("room list update", onRoomList);
-    socket.on("game prepare", () => {
-      console.log("clear room list");
-      this.type = "empty";
-    });
+    socket.on("room_list", onRoomList);
+    socket.on("room_list_update", onRoomList);
   },
   methods: {
     onSelectRoom(id) {

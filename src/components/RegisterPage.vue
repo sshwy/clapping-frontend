@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div
-      v-if="!sessioned"
+      v-if="!this.$store.state.authorized"
       class="full-page"
       :style="{
         position: 'absolute',
@@ -30,7 +30,18 @@
         </form>
       </div>
       <div class="home-footer">
-        <span class="version" title="Version of Front-end">{{ version }}</span>
+        <div>
+          <span>F: </span>
+          <span class="version" title="Version of Front-end">{{
+            version
+          }}</span>
+        </div>
+        <div v-if="this.$store.state.backend_version">
+          <span>B: </span>
+          <span class="version" title="Version of Back-end">{{
+            this.$store.state.backend_version
+          }}</span>
+        </div>
       </div>
     </div>
   </transition>
@@ -40,9 +51,6 @@
 import socket from "../socket";
 
 export default {
-  props: {
-    sessioned: Boolean,
-  },
   data() {
     return {
       username: "",
@@ -58,6 +66,16 @@ export default {
     version() {
       return process.env.VUE_APP_GIT_DESCRIPTION.toString();
     },
+  },
+  created() {
+    fetch(process.env.VUE_APP_SOCKET_URL + "/info.json")
+      .then((data) => data.json())
+      .then((data) => {
+        console.log(data);
+        this.$store.commit("setstate", {
+          backend_version: data.version.raw,
+        });
+      });
   },
 };
 </script>
@@ -97,7 +115,7 @@ export default {
   bottom: 0;
   padding: 0 10px 10px 10px;
 }
-.version {
+.home-footer span {
   color: #9f9f9f;
   transition: 0.3s all ease;
   cursor: default;

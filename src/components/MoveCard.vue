@@ -15,6 +15,7 @@
           :key="idx"
           :src="getImageURL(src)"
           :alt="src"
+          onerror="this.src='break.svg';"
       /></span>
     </div>
     <div class="room-card-content card-content">

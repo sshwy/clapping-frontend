@@ -89,13 +89,13 @@ export default {
     };
   },
   created() {
-    socket.on("room list", () => {
+    socket.on("room_list", () => {
       this.type = "empty";
     });
-    socket.on("room info", () => {
+    socket.on("room_info", () => {
       this.type = "display";
     });
-    socket.on("room info ingame", () => {
+    socket.on("room_info_ingame", () => {
       this.type = "display";
     });
   },

@@ -1,9 +1,9 @@
 <template>
   <global-css />
-  <register-page :sessioned="sessioned" />
+  <register-page />
   <transition name="delay-fade">
-    <div v-show="sessioned">
-      <navbar :username="username" />
+    <div v-show="this.$store.state.authorized">
+      <navbar />
       <div class="main-container">
         <room-list />
         <Main />
@@ -14,7 +14,7 @@
     <div id="message-container">
       <transition-group name="message-list" tag="div">
         <message
-          v-for="msg in messageList"
+          v-for="msg in this.$store.state.messages"
           :key="msg.id"
           :text="msg.text"
           :type="msg.type"
@@ -26,12 +26,12 @@
 
 <script>
 import socket from "./socket";
-import RegisterPage from "./components/RegisterPage.vue";
-import RoomList from "./components/RoomList.vue";
+import RegisterPage from "./components/RegisterPage";
+import RoomList from "./components/RoomList";
 import Main from "./components/Main";
-import Message from "./components/Message.vue";
-import Navbar from "./components/Navbar.vue";
-import GlobalCss from "./components/GlobalCss.vue";
+import Message from "./components/Message";
+import Navbar from "./components/Navbar";
+import GlobalCss from "./components/GlobalCss";
 
 export default {
   name: "App",
@@ -45,8 +45,6 @@ export default {
   },
   data() {
     return {
-      username: "",
-      sessioned: true,
       messageList: [],
     };
   },
@@ -58,60 +56,17 @@ export default {
       console.log("reconnect");
       socket.connect();
     } else {
-      this.sessioned = false;
+      this.$store.commit("setstate", {
+        authorized: false,
+      });
     }
-
-    socket.on("session", ({ sessionID, userID, username }) => {
-      socket.auth = { sessionID }; // attach the session ID to the next reconnection attempts
-      localStorage.setItem("sessionID", sessionID); // store it in the localStorage
-      socket.userID = userID; // save the ID of the user
-      this.sessioned = true;
-      this.username = username;
-      socket.username = username;
-      this.addMessage("success", "登录成功");
-    });
-    socket.on("connect_error", (err) => {
-      console.error(`[connect] ` + err.message);
-      if (err.message === "invalid username") {
-        this.addMessage("info", "你输入的用户名不太对劲哦");
-        this.onClearCache();
-        location.reload();
-      } else if (err.message === "xhr poll error") {
-        this.onClearCache();
-        this.addMessage("error", "似乎连不上服务器了……请刷新重试");
-      }
-    });
-    socket.on("finish logout", () => {
-      this.onClearCache();
-      location.reload();
-    });
-    socket.on("display message", (type, text, delay = 3000) => {
-      this.addMessage(type, text, delay);
-    });
-    socket.on("room list update", () => {
-      this.addMessage("success", "成功刷新房间列表");
-    });
   },
   methods: {
-    onClearCache() {
-      console.log("clear cache.");
-      localStorage.removeItem("sessionID");
-    },
     addMessage(type, text, delay = 3000) {
-      const id = new Date().getTime();
-      this.messageList.unshift({
-        id: id,
-        text: text,
-        type: type,
-        delay: delay,
-      });
-      while (this.messageList.length > 10) {
-        this.messageList.pop();
-      }
-      this.$nextTick(function () {
-        setTimeout(() => {
-          this.messageList = this.messageList.filter((msg) => msg.id !== id);
-        }, delay);
+      this.$store.dispatch("message", {
+        type,
+        text,
+        delay,
       });
     },
   },

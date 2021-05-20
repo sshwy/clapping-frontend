@@ -1,17 +1,17 @@
 <template>
   <transition name="delay-fade">
     <div
-      v-show="type !== 'empty'"
+      v-show="this.$store.getters.is_gaming || this.$store.getters.is_room_info"
       :style="{
         height: 'calc(100vh - 80px)',
       }"
     >
       <grid-layout>
         <grid-row :height="0.06">
-          <div v-if="type === 'room_info'" class="room-title">
+          <div v-if="this.$store.getters.is_room_info" class="room-title">
             <h3>房间 #{{ room.id }}</h3>
           </div>
-          <div v-if="type !== 'empty' && type !== 'room_info'">
+          <div v-if="this.$store.getters.is_gaming">
             <span
               >「第 <span class="turn-number">{{ turn }}</span> 回合」你拥有
               {{ point }} 行动点</span
@@ -21,15 +21,11 @@
         </grid-row>
         <grid-row :height="0.45">
           <grid-col :width="16">
-            <game-info
-              v-if="type === 'room_info'"
-              :room="room"
-              :selfid="selfid"
-            />
-            <log-board v-show="ingame" />
+            <game-info v-if="this.$store.getters.is_room_info" :room="room" />
+            <log-board v-show="this.$store.getters.is_gaming" />
           </grid-col>
           <grid-col :width="8">
-            <div v-if="ingame">
+            <div v-if="this.$store.getters.is_gaming">
               <user-card-in-game
                 v-for="u in room_info_ingame.players"
                 :key="u.id"
@@ -44,9 +40,9 @@
               />
             </div>
             <room-info
-              v-if="type === 'room_info'"
+              v-if="this.$store.getters.is_room_info"
               :room="room"
-              :selfid="selfid"
+              :selfid="this.$store.state.userID"
               :selfstat="selfstat"
             />
           </grid-col>
@@ -60,11 +56,7 @@
           <talk />
           <div v-if="type === 'terminate'" v-html="message"></div>
           <div v-if="type === 'submitted' && room_status?.self?.name">
-            <movement-log
-              :description="submitted_movement"
-              :selfid="room_status.self.id"
-              :gameid="game_id"
-            />
+            <movement-log :description="submitted_movement" />
           </div>
           <div
             :style="{
@@ -107,7 +99,6 @@ import {
   suggestMovementId,
   needTarget,
   needDeadTarget,
-  getAllMovement,
 } from "../../utils";
 
 export default {
@@ -126,15 +117,11 @@ export default {
   data() {
     return {
       type: "empty",
-      selfid: "",
       room: {},
       selfstat: "",
-      ingame: false,
-      game_id: 0,
       message: "",
       room_status: {},
       available_move_id_list: [],
-      move_list: [],
       selected_move: "",
       targetList: [],
       submitted_movement: {},
@@ -147,40 +134,30 @@ export default {
       remain_time: 0,
     };
   },
+  computed: {
+    move_list() {
+      return [...this.$store.getters.all_movement].sort(
+        (a, b) => a.point - b.point
+      );
+    },
+  },
   created() {
-    socket.on("session", ({ userID }) => {
-      this.selfid = userID; // save the ID of the user
-    });
-    socket.on("room info", (room) => {
+    socket.on("room_info", (room) => {
       this.room = room;
       const stat = room.players.find((e) => e.id == socket.userID).stat;
       this.selfstat = stat === PlayerStatus.ROOMED ? "roomed" : "ready";
-      this.type = "room_info";
-      this.ingame = false;
-      this.game_id = room.game_id;
-      this.move_list = getAllMovement(this.game_id);
+      // this.type = "room_info";
     });
-    socket.on("room info ingame", (room) => {
+    socket.on("room_info_ingame", (room) => {
       this.room_info_ingame = room;
       this.turn = room.turn;
       this.point = room.players.find((e) => e.id === socket.userID)?.point;
-      this.ingame = true;
-      this.game_id = room.game_id;
-      this.move_list = getAllMovement(this.game_id);
     });
     const onRoomList = () => {
       this.type = "empty";
     };
-    socket.on("room list", onRoomList);
-    socket.on("room list update", onRoomList);
-    socket.on("game prepare", () => {
-      console.log("clear room list");
-      this.type = "gaming";
-    });
-    socket.on("room list", () => {
-      this.type = "empty";
-      this.ingame = false;
-    });
+    socket.on("room_list", onRoomList);
+    socket.on("room_list_update", onRoomList);
     socket.on("died", () => {
       this.type = "terminate";
       this.message = "你咋这么菜啊～";
@@ -194,10 +171,7 @@ export default {
       this.room_status = status;
       this.turn = status.turn;
       this.point = status.self.movePoint;
-      this.available_move_id_list = suggestMovementId(
-        status.self.movePoint,
-        this.game_id
-      );
+      this.available_move_id_list = suggestMovementId(status.self.movePoint);
 
       this.type = "req_move";
 
@@ -217,12 +191,12 @@ export default {
   },
   methods: {
     onSelectMove(move) {
-      if (needTarget(move, this.game_id)) {
+      if (needTarget(move)) {
         console.log("selectTarget");
         this.selected_move = move;
         this.on_select_target = true;
         this.type = "req_target";
-      } else if (needDeadTarget(move, this.game_id)) {
+      } else if (needDeadTarget(move)) {
         console.log("selectTarget");
         this.selected_move = move;
         this.on_select_target = true;

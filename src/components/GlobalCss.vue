@@ -4,7 +4,6 @@
 
 <script>
 import socket from "../socket";
-import store from "../dataStore";
 
 export default {
   name: "GlobalCss",
@@ -20,7 +19,6 @@ export default {
     this.styleEl.innerHTML = this.styleStr;
 
     socket.on("session", ({ games }) => {
-      store.set("games", games);
       this.styleStr = this.styleStr + this.renderGameCSS(games[4]);
       this.styleEl.innerHTML = this.styleStr;
     });
@@ -76,5 +74,9 @@ h4,
 h5,
 h6 {
   margin: 0;
+}
+
+img[src$="break.svg"] {
+  display: none;
 }
 </style>
