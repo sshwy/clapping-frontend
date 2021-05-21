@@ -1,5 +1,6 @@
 /* eslint-disable no-fallthrough */
-import store from './store';
+import store from '../store';
+import random_username from './random_username';
 
 const PlayerStatus = {
   INITIALIZED: 0,
@@ -90,4 +91,5 @@ export {
   needDeadTarget,
   debounce,
   clearCache,
+  random_username,
 }

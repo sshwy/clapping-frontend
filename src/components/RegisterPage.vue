@@ -29,6 +29,16 @@
             :bordered="false"
             v-on:click="onUsernameSelection"
           ></vbtn>
+          <vbtn
+            class="iconfont icon-random-solid"
+            :style="{
+              fontSize: '1.8em',
+              verticalAlign: '-0.2em',
+            }"
+            title="随机一个用户名"
+            :bordered="false"
+            v-on:click="onRandomUsername"
+          ></vbtn>
         </form>
       </div>
       <div class="home-footer">
@@ -52,6 +62,7 @@
 <script>
 import socket from "../socket";
 import Button from "./Button";
+import { random_username } from "../utils";
 
 export default {
   components: {
@@ -66,6 +77,9 @@ export default {
     onUsernameSelection() {
       socket.auth = { username: this.username };
       socket.connect();
+    },
+    onRandomUsername() {
+      this.username = random_username();
     },
     onTest() {
       console.log("test");
