@@ -6,7 +6,6 @@
 import socket from "../socket";
 
 export default {
-  name: "GlobalCss",
   data() {
     return {
       styleEl: document.createElement("style"),
@@ -55,6 +54,9 @@ html {
 body {
   overflow-y: hidden;
   margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    "Microsoft YaHei", "WenQuanYi Micro Hei", "Microsoft YaHei UI", sans-serif;
 }
 
 li {
@@ -98,5 +100,8 @@ input::placeholder {
 }
 input[disabled] {
   background-color: rgb(206, 206, 206);
+}
+input[type="radio"] {
+  outline: none;
 }
 </style>

@@ -12,8 +12,8 @@
           ref="talk_input"
           placeholder="来 bb 几句？"
           title="按下回车以发送消息"
-          v-on:focus="onFocus"
-          v-on:blur="onBlur"
+          @focus="onFocus"
+          @blur="onBlur"
           :disabled="disable"
           :style="{
             lineHeight: '1.5em',
@@ -22,19 +22,14 @@
               'monospace, Microsoft YaHei, WenQuanYi Micro Hei, Microsoft YaHei UI, sans-serif',
           }"
         />
-        <input
-          type="submit"
-          value=""
-          style="display: none"
-          v-on:click="onTalk"
-        />
+        <input type="submit" value="" style="display: none" @click="onTalk" />
         <span :class="['word-counter', text.length > 50 && 'exceed']">
           {{ text.length }} / 50
         </span>
         <span
           class="iconfont icon-add-circle addexp-btn"
           title="添加到快捷词组"
-          v-on:click="onAddExpression"
+          @click="onAddExpression"
         ></span>
       </form>
     </div>
@@ -51,19 +46,13 @@
             v-for="s in expressionList"
             :key="s"
             class="exp-item"
-            v-on:click="
-              () => {
-                if (disable) return;
-                text = s;
-                onTalk();
-              }
-            "
+            @click="() => onExpChoose(s)"
           >
             <span class="text">{{ s }}</span>
             <span
               class="iconfont icon-close delete-exp-btn"
               title="删除快捷词组"
-              v-on:click.stop="() => onRemoveExp(s)"
+              @click.stop="() => onRemoveExp(s)"
             ></span>
           </li>
         </ul>
@@ -76,11 +65,11 @@
 import socket from "../socket";
 
 export default {
-  name: "Talk",
   data() {
     const expressionList = (localStorage.getItem("quick-exp") || "")
       .split("<spliter>")
       .filter((e) => e);
+
     return {
       text: "",
       disable: false,
@@ -106,6 +95,9 @@ export default {
         }, 300);
       });
     },
+    /**
+     * @returns {void}
+     */
     onTalk() {
       if (this.text.length > 50) {
         this.$store.dispatch("message", {
@@ -165,8 +157,14 @@ export default {
         20
       );
     },
+    onExpChoose(s) {
+      if (this.disable) return;
+      this.text = s;
+      this.onTalk();
+    },
   },
   computed: {
+    /** @returns {number} */
     inputWidth() {
       return Math.max(this.minInputWidth, this.text.length);
     },

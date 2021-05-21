@@ -17,9 +17,9 @@
             type="submit"
             value=""
             :style="{ display: 'none' }"
-            v-on:click="onUsernameSelection"
+            @click="onUsernameSelection"
           />
-          <vbtn
+          <v-button
             class="iconfont icon-arrow-right-circle"
             :style="{
               fontSize: '1.8em',
@@ -27,9 +27,9 @@
             }"
             title="点击以登录"
             :bordered="false"
-            v-on:click="onUsernameSelection"
-          ></vbtn>
-          <vbtn
+            @click="onUsernameSelection"
+          ></v-button>
+          <v-button
             class="iconfont icon-random-solid"
             :style="{
               fontSize: '1.8em',
@@ -37,8 +37,8 @@
             }"
             title="随机一个用户名"
             :bordered="false"
-            v-on:click="onRandomUsername"
-          ></vbtn>
+            @click="onRandomUsername"
+          ></v-button>
         </form>
       </div>
       <div class="home-footer">
@@ -61,12 +61,12 @@
 
 <script>
 import socket from "../socket";
-import Button from "./Button";
+import VButton from "./VButton";
 import { random_username } from "../utils";
 
 export default {
   components: {
-    vbtn: Button,
+    VButton,
   },
   data() {
     return {
@@ -80,9 +80,6 @@ export default {
     },
     onRandomUsername() {
       this.username = random_username();
-    },
-    onTest() {
-      console.log("test");
     },
   },
   computed: {

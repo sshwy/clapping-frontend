@@ -2,7 +2,7 @@
   <div class="user-card-in-game">
     <span
       :class="['userstat', 'tag', selectable ? 'selectable' : stat_data?.class]"
-      v-on:click="() => selectable && onClick()"
+      @click="() => selectable && onClick()"
       >{{ selectable ? "选择" : stat_data?.title }}</span
     >
     <span class="username">{{ user.name }}</span>

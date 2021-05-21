@@ -10,9 +10,9 @@
             :id="'game-' + game.id"
             v-model="game_picked"
           />
-          <label :for="'game-' + game.id"
-            ><span class="game-title">{{ game.name }}</span></label
-          >
+          <label :for="'game-' + game.id">
+            <span class="game-title">{{ game.name }}</span>
+          </label>
         </li>
       </ul>
     </form>
@@ -85,8 +85,5 @@ export default {
 }
 .game-config {
   margin: 1em 0;
-}
-input[type="radio"] {
-  outline: none;
 }
 </style>

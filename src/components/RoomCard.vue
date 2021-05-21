@@ -2,7 +2,7 @@
   <div
     class="room-card card card-with-hover"
     title="加入房间"
-    v-on:click="debouncedClick"
+    @click="debouncedClick"
   >
     <div class="room-card-title card-title">Room #{{ id }}</div>
     <div class="room-card-content card-content">
@@ -18,7 +18,6 @@ export default {
     room: Object,
     onClick: Function,
   },
-  components: {},
   data() {
     return {
       id: this.room.id,

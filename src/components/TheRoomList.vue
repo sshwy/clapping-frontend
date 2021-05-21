@@ -9,10 +9,10 @@
         >
           房间列表
         </h3>
-        <vbtn v-on:click="onUpdateRoomList">
+        <v-button @click="onUpdateRoomList">
           <span class="iconfont icon-refresh"></span>
           刷新
-        </vbtn>
+        </v-button>
         <div class="room-list clear-fix">
           <room-card
             v-for="room in this.$store.state.data.room_list || []"
@@ -29,13 +29,13 @@
 <script>
 import socket from "../socket";
 import RoomCard from "./RoomCard.vue";
-import Button from "./Button";
+import VButton from "./VButton";
 
 export default {
   name: "User",
   components: {
     RoomCard,
-    vbtn: Button,
+    VButton,
   },
   methods: {
     onSelectRoom(id) {

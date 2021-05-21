@@ -7,9 +7,9 @@
       您以 「<span class="username">{{ $store.state.username }}</span
       >」 的身份登录
 
-      <vbtn v-on:click="onLogout">
+      <v-button @click="onLogout">
         <span class="iconfont icon-sign-out"></span> 注销
-      </vbtn>
+      </v-button>
       <span class="btn"></span>
     </div>
   </div>
@@ -17,11 +17,11 @@
 
 <script>
 import socket from "../socket";
-import Button from "./Button";
+import VButton from "./VButton";
 
 export default {
   components: {
-    vbtn: Button,
+    VButton,
   },
   methods: {
     onLogout() {

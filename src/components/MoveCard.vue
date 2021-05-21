@@ -5,7 +5,7 @@
       'movement-' + move.id,
       disabled && 'movement-disabled',
     ]"
-    v-on:click="onAvailableClick"
+    @click="onAvailableClick"
   >
     <div class="room-card-title card-title">
       <span class="movement-title">{{ move.title }}</span>
@@ -21,14 +21,16 @@
     <div class="room-card-content card-content">
       需要 {{ move.point }} 行动点
     </div>
-    <span
+    <v-button
+      :styled="false"
       :class="[
         'iconfont icon-help movement-card-help',
         displayHelp && 'movement-card-help-displaying',
       ]"
-      v-on:click.stop="() => onHelp(move.id)"
-    ></span>
+      @click.stop="() => this.$emit('help', move.id)"
+    />
   </div>
+
   <div v-if="displayHelp" class="clear-sep"></div>
   <div v-if="displayHelp" class="help-container card">
     <div class="card-content">
@@ -49,12 +51,20 @@
 </template>
 
 <script>
+import VButton from "./VButton";
+
 export default {
   name: "MoveCard",
+  emits: ["help"],
+  components: {
+    VButton,
+  },
   props: {
     move: Object,
-    helpkey: Number,
-    onHelp: Function,
+    helpkey: {
+      type: Number,
+      required: true,
+    },
     onClick: Function,
     disabled: Boolean,
   },

@@ -1,14 +1,14 @@
 <template>
-  <vbtn v-on:click="debouncedOnClick"><slot></slot></vbtn>
+  <v-button @click="debouncedOnClick"><slot></slot></v-button>
 </template>
 
 <script>
 import { debounce } from "../utils";
-import Button from "./Button";
+import VButton from "./VButton";
 
 export default {
   components: {
-    vbtn: Button,
+    VButton,
   },
   props: {
     onClick: Function,

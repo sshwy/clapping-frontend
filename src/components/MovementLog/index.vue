@@ -55,6 +55,11 @@
 <script>
 import TurnSpan from "./TurnSpan";
 
+/**
+ * @name MovementLog
+ * @description 对战日志
+ * @displayName MovmentLog
+ */
 export default {
   name: "MovementLog",
   inject: ["getPlayerList"],

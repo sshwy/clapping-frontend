@@ -55,7 +55,7 @@ function needDeadTarget (move_id) {
   return Boolean(store.getters.all_movement[move_id].need_dead_target);
 }
 
-function debounce (f, delay_time = 2000) {
+const debounce = (f, delay_time = 2000) => {
   var is_ok = true;
   return function (...args) {
     const machine = {

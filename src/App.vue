@@ -1,19 +1,19 @@
 <template>
   <global-css />
-  <register-page />
+  <the-register-page />
   <transition name="delay-fade">
     <div v-show="this.$store.state.authorized">
-      <navbar />
+      <the-navbar />
       <div class="main-container">
-        <room-list />
-        <Main />
+        <the-room-list />
+        <the-main />
       </div>
     </div>
   </transition>
   <teleport to="body">
     <div id="message-container">
       <transition-group name="message-list" tag="div">
-        <message
+        <message-box
           v-for="msg in this.$store.state.messages"
           :key="msg.id"
           :text="msg.text"
@@ -26,22 +26,22 @@
 
 <script>
 import socket from "./socket";
-import RegisterPage from "./components/RegisterPage";
-import RoomList from "./components/RoomList";
-import Main from "./components/Main";
-import Message from "./components/Message";
-import Navbar from "./components/Navbar";
+import MessageBox from "./components/MessageBox";
 import GlobalCss from "./components/GlobalCss";
+import TheRegisterPage from "./components/TheRegisterPage";
+import TheRoomList from "./components/TheRoomList";
+import TheMain from "./components/TheMain";
+import TheNavbar from "./components/TheNavbar";
 
 export default {
   name: "App",
   components: {
-    RoomList,
-    Message,
-    Navbar,
+    TheRoomList,
+    MessageBox,
+    TheNavbar,
     GlobalCss,
-    RegisterPage,
-    Main,
+    TheRegisterPage,
+    TheMain,
   },
   data() {
     return {
@@ -87,11 +87,6 @@ export default {
   }
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
-    "Microsoft YaHei", "WenQuanYi Micro Hei", "Microsoft YaHei UI", sans-serif;
-}
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

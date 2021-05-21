@@ -32,7 +32,7 @@
                 :user="u"
                 :selectable="
                   on_select_target &&
-                  u.id !== room_status?.self?.id &&
+                  u.id !== this.$store.state.userID &&
                   ((type === 'req_target' && u.stat !== dead) ||
                     (type === 'req_dead_target' && u.stat === dead))
                 "
@@ -52,7 +52,7 @@
             position: 'relative',
           }"
         >
-          <talk />
+          <talk-box />
           <div v-if="type === 'terminate'" v-html="message"></div>
           <div v-if="type === 'submitted' && room_status?.self?.name">
             <movement-log :description="submitted_movement" />
@@ -68,11 +68,11 @@
                 <move-card
                   v-for="move in move_list"
                   :key="move.id"
+                  :helpkey="movement_help_key"
                   :disabled="!available_move_id_list.includes(move.id)"
                   :move="move"
                   :onClick="() => onSelectMove(move.id)"
-                  :helpkey="movement_help_key"
-                  :onHelp="onMovementHelp"
+                  @help="onMovementHelp"
                 />
               </div>
             </transition>
@@ -92,7 +92,7 @@ import MoveCard from "../MoveCard";
 import MovementLog from "../MovementLog";
 import UserCardInGame from "../UserCardInGame";
 import LogBoard from "../LogBoard";
-import Talk from "../Talk.vue";
+import TalkBox from "../TalkBox.vue";
 import {
   PlayerStatus,
   suggestMovementId,
@@ -111,20 +111,23 @@ export default {
     MovementLog,
     UserCardInGame,
     LogBoard,
-    Talk,
+    TalkBox,
   },
   data() {
     return {
       type: "empty",
+      /** @type {any} */
       room: {},
+      /** @type {any} */
+      room_status: {},
+      /** @type {any} */
+      room_info_ingame: {},
       selfstat: "",
       message: "",
-      room_status: {},
       available_move_id_list: [],
       selected_move: "",
       targetList: [],
       submitted_movement: {},
-      room_info_ingame: {},
       on_select_target: false,
       turn: 0,
       point: 0,
@@ -134,6 +137,7 @@ export default {
     };
   },
   computed: {
+    /** @returns {import('../../../global').MovementData[]}*/
     move_list() {
       return [...this.$store.getters.all_movement].sort(
         (a, b) => a.point - b.point
@@ -145,7 +149,6 @@ export default {
       this.room = room;
       const stat = room.players.find((e) => e.id == socket.userID).stat;
       this.selfstat = stat === PlayerStatus.ROOMED ? "roomed" : "ready";
-      // this.type = "room_info";
     });
     socket.on("room_info_ingame", (room) => {
       this.room_info_ingame = room;

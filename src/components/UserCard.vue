@@ -10,14 +10,14 @@
     <span
       v-if="editable"
       class="tag btn remove-btn"
-      v-on:click="() => onKick(user.id)"
+      @click="() => onKick(user.id)"
       >踢了</span
     >
     <span v-show="isReady" class="tag ready-tag">已准备</span>
     <span
       v-if="editable && !isReady"
       class="tag btn hurry-btn"
-      v-on:click="() => onHurry(user.id)"
+      @click="() => onHurry(user.id)"
       >催他准备</span
     >
     <span v-if="editable && !isReady && hurry_times" class="hurry-times"

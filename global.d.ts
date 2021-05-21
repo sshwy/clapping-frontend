@@ -1,5 +1,6 @@
 import { Socket } from "socket.io-client";
 import { Action, Getter, Mutation, Store } from "vuex";
+import { MovementData } from "../common";
 
 interface AppState {
   socket: Socket;
@@ -10,7 +11,7 @@ interface AppState {
   backend_version: string; // 后端版本
   games: Game[]; // 游戏数组
   scene_type: "unauthorized" | "room_list" | "room_info" | "gaming"; // 场景
-  data: GamingData | RoomListData | {}; // 不同的 scene_type 对应不同的 data
+  data: Data; // 不同的 scene_type 对应不同的 data
   messages: Message[]; // 左下角提示信息列表
 }
 
@@ -20,12 +21,9 @@ interface Message {
   type: "info" | "success" | "error";
 }
 
-interface GamingData {
-  game_id: number;
-}
-
-interface RoomListData {
-  room_list: any[];
+interface Data {
+  game_id: number; // in game
+  room_list: any[]; // for room list display
 }
 
 type SocketMutations = {
@@ -42,3 +40,11 @@ type AppGetters = {
 
 type AppStore = Store<AppState>;
 type Game = any;
+
+export { MovementData, AppStore, AppGetters, AppActions, SocketMutations };
+
+declare module "@vue/runtime-core" {
+  interface ComponentCustomProperties {
+    $store: Store<AppState>;
+  }
+}
