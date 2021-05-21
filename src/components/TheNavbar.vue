@@ -10,8 +10,25 @@
       <v-button @click="onLogout">
         <span class="iconfont icon-sign-out"></span> 注销
       </v-button>
-      <span class="btn"></span>
     </div>
+    <ul
+      class="menu clear-fix"
+      :style="{
+        float: 'right',
+        lineHeight: '59px',
+      }"
+    >
+      <v-button
+        v-for="item in menu"
+        :key="item.component"
+        :styled="false"
+        @click="this.$emit('switch', item.component)"
+        tag="li"
+        class="menu-item"
+      >
+        <span class="menu-item-title">{{ item.title }}</span>
+      </v-button>
+    </ul>
   </div>
 </template>
 
@@ -22,6 +39,21 @@ import VButton from "./VButton";
 export default {
   components: {
     VButton,
+  },
+  emits: ["switch"],
+  data() {
+    return {
+      menu: [
+        {
+          title: "游戏",
+          component: "game-page",
+        },
+        {
+          title: "帮助",
+          component: "document-page",
+        },
+      ],
+    };
   },
   methods: {
     onLogout() {
@@ -56,5 +88,14 @@ export default {
   float: left;
   margin-right: 10px;
   user-select: none;
+}
+.menu .menu-item {
+  float: left;
+  padding: 0 10px;
+  transition: 0.3s background ease;
+  cursor: pointer;
+}
+.menu .menu-item:hover {
+  background-color: #cfcfcf;
 }
 </style>

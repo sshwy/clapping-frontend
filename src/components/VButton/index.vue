@@ -18,13 +18,13 @@ export default {
   props: {
     /**
      * 指定按扭的 HTML 原生标签，默认为 span
-     * @values div, span
+     * @values div, span, li
      */
     tag: {
       type: String,
       default: "span",
       validator: (value) => {
-        return ["div", "span"].includes(value);
+        return ["div", "span", "li"].includes(value);
       },
     },
     /**

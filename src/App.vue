@@ -3,10 +3,11 @@
   <the-register-page />
   <transition name="delay-fade">
     <div v-show="this.$store.state.authorized">
-      <the-navbar />
+      <the-navbar @switch="onRouterChange" />
       <div class="main-container">
-        <the-room-list />
-        <the-main />
+        <keep-alive>
+          <component :is="current_page" />
+        </keep-alive>
       </div>
     </div>
   </transition>
@@ -29,23 +30,24 @@ import socket from "./socket";
 import MessageBox from "./components/MessageBox";
 import GlobalCss from "./components/GlobalCss";
 import TheRegisterPage from "./components/TheRegisterPage";
-import TheRoomList from "./components/TheRoomList";
-import TheMain from "./components/TheMain";
 import TheNavbar from "./components/TheNavbar";
+import GamePage from "./components/GamePage";
+import DocumentPage from "./components/DocumentPage";
 
 export default {
   name: "App",
   components: {
-    TheRoomList,
     MessageBox,
     TheNavbar,
     GlobalCss,
     TheRegisterPage,
-    TheMain,
+    GamePage,
+    DocumentPage,
   },
   data() {
     return {
       messageList: [],
+      current_page: "game-page",
     };
   },
   created() {
@@ -60,6 +62,12 @@ export default {
         authorized: false,
       });
     }
+  },
+  methods: {
+    onRouterChange(component) {
+      console.log(component);
+      this.current_page = component;
+    },
   },
 };
 </script>
